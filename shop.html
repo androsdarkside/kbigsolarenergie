@@ -9,8 +9,8 @@
 <body>
     <header>
         <div class="logo"> 
-            <img src="logo.jpg" alt="K.BIG Solar Logo"> 
-        </div>
+    <img src="logo.jpg" alt="K.BIG Solar Logo" id="dyn-logo"> 
+</div>
         <nav class="menu">
             <a href="index.html" id="dyn-nav-home">Home</a>
             <a href="shop.html" id="dyn-nav-shop" style="color: #ff5100;">Shop</a>
@@ -122,6 +122,12 @@
                 if(data.navAbout) document.getElementById('dyn-nav-about').innerText = data.navAbout;
                 if(data.footerText) document.getElementById('dyn-footer').innerText = data.footerText;
             }
+            if(data.heroImage) {
+                    document.querySelector('.hero').style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('${data.heroImage}')`;
+                }
+            if(data.heroImage) {
+                    document.querySelector('.hero').style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('${data.heroImage}')`;
+                }
         });
     </script>
 </body>
