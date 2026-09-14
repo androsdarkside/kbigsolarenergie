@@ -1,86 +1,101 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-       // 1. Importation Firebase
-       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-       import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-       import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
+    authDomain: "k-big-solar-energie.firebaseapp.com",
+    projectId: "k-big-solar-energie",
+    storageBucket: "k-big-solar-energie.firebasestorage.app", 
+    messagingSenderId: "678658108783",
+    appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
+};
 
-       // 2. Ta configuration Firebase
-       const firebaseConfig = {
-           apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
-           authDomain: "k-big-solar-energie.firebaseapp.com",
-           projectId: "k-big-solar-energie",
-           storageBucket: "k-big-solar-energie.firebasestorage.app", 
-           messagingSenderId: "678658108783",
-           appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
-       };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-       const app = initializeApp(firebaseConfig);
-       const auth = getAuth(app);
-       const db = getFirestore(app);
+const loginSection = document.getElementById('login-section');
+const dashboardSection = document.getElementById('dashboard-section');
+const loginBtn = document.getElementById('login-btn');
+const logoutBtn = document.getElementById('logout-btn');
+const loginError = document.getElementById('login-error');
+const addItemBtn = document.getElementById('add-item-btn');
+const successMsg = document.getElementById('success-msg');
 
-       const loginSection = document.getElementById('login-section');
-       const dashboardSection = document.getElementById('dashboard-section');
-       const loginBtn = document.getElementById('login-btn');
-       const logoutBtn = document.getElementById('logout-btn');
-       const loginError = document.getElementById('login-error');
-       const addItemBtn = document.getElementById('add-item-btn');
-       const successMsg = document.getElementById('success-msg');
+loginBtn.addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    loginBtn.innerText = "Connexion...";
 
-       // Connexion
-       loginBtn.addEventListener('click', () => {
-           const email = document.getElementById('email').value;
-           const password = document.getElementById('password').value;
-           loginBtn.innerText = "Connexion...";
+    signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            loginSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            loginError.style.display = 'none';
+            loginBtn.innerText = "Se connecter";
+        })
+        .catch((error) => {
+            loginError.style.display = 'block';
+            loginBtn.innerText = "Se connecter";
+            console.error(error.message);
+        });
+});
 
-           signInWithEmailAndPassword(auth, email, password)
-               .then(() => {
-                   loginSection.style.display = 'none';
-                   dashboardSection.style.display = 'block';
-                   loginError.style.display = 'none';
-                   loginBtn.innerText = "Se connecter";
-               })
-               .catch((error) => {
-                   loginError.style.display = 'block';
-                   loginBtn.innerText = "Se connecter";
-                   console.error(error.message);
-               });
-       });
+logoutBtn.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        loginSection.style.display = 'block';
+        dashboardSection.style.display = 'none';
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+    });
+});
 
-       // Déconnexion
-       logoutBtn.addEventListener('click', () => {
-           signOut(auth).then(() => {
-               loginSection.style.display = 'block';
-               dashboardSection.style.display = 'none';
-               document.getElementById('email').value = '';
-               document.getElementById('password').value = '';
-           });
-       });
+addItemBtn.addEventListener('click', async () => {
+    const titre = document.getElementById('titre').value;
+    const prix = document.getElementById('prix').value;
+    const imageFile = document.getElementById('image').files[0];
 
-       // Ajout d'article ultra-sécurisé et sans blocage
-       addItemBtn.addEventListener('click', async () => {
-           const titre = document.getElementById('titre').value;
-           const prix = document.getElementById('prix').value;
-           const imageFile = document.getElementById('image').files[0];
+    if (!titre || !prix || !imageFile) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+    }
 
-           if (!titre || !prix || !imageFile) {
-               alert("Veuillez remplir tous les champs !");
-               return;
-           }
+    addItemBtn.innerText = "Publication en cours...";
+    addItemBtn.disabled = true;
 
-           addItemBtn.innerText = "Publication en cours...";
-           addItemBtn.disabled = true;
+    try {
+        const base64Image = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(imageFile);
+        });
 
-           try {
-               // Lecture simple et directe de l'image
-               const base64Image = await new Promise((resolve, reject) => {
-                   const reader = new FileReader();
-                   reader.onload = () => resolve(reader.result);
-                   reader.onerror = (error) => reject(error);
-                   reader.readAsDataURL(imageFile);
-               });
+        await addDoc(collection(db, "articles_solaires"), {
+            titre: titre,
+            prix: parseFloat(prix),
+            imageUrl: base64Image,
+            dateAjout: new Date()
+        });
 
-               // Enregistrement dans Firebase Firestore
-               await addDoc(collection(db, "articles_solaires"), {
+        alert("Article publié avec succès !");
+        
+        document.getElementById('titre').value = '';
+        document.getElementById('prix').value = '';
+        document.getElementById('image').value = '';
+        successMsg.style.display = 'block';
+        setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
+
+    } catch (error) {
+        console.error("Erreur :", error);
+        alert("Erreur lors de la publication : " + error.message);
+    } finally {
+        addItemBtn.innerText = "Publier l'article";
+        addItemBtn.disabled = false;
+    }
+});
+olaires"), {
                    titre: titre,
                    prix: parseFloat(prix),
                    imageUrl: base64Image,
