@@ -94,7 +94,29 @@
                 <button id="save-texts-btn" style="background-color: #27ae60;">Mettre à jour le site</button>
                 <p id="text-success-msg" style="color: green; text-align: center; display: none;">Textes mis à jour !</p>
             </div>
-
+<!-- NOUVELLE SECTION : GESTION GLOBALE (Menu & Footer) -->
+            <div class="section-header">3. Navigation & Pied de page</div>
+            <div style="margin-top: 20px;">
+                <div class="form-group">
+                    <label>Menu 1 (Accueil)</label>
+                    <input type="text" id="nav-home">
+                </div>
+                <div class="form-group">
+                    <label>Menu 2 (Boutique)</label>
+                    <input type="text" id="nav-shop">
+                </div>
+                <div class="form-group">
+                    <label>Menu 3 (À propos)</label>
+                    <input type="text" id="nav-about">
+                </div>
+                <div class="form-group">
+                    <label>Texte du pied de page (Footer)</label>
+                    <input type="text" id="footer-text">
+                </div>
+                <button id="save-global-btn" style="background-color: #27ae60;">Mettre à jour Menu & Footer</button>
+                <p id="global-success-msg" style="color: green; text-align: center; display: none;">Éléments mis à jour !</p>
+            </div>
+            <br>
             <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 40px;">Se déconnecter</button>
         </div>
     </div>
@@ -218,6 +240,31 @@
             });
             document.getElementById('text-success-msg').style.display = 'block';
             setTimeout(() => document.getElementById('text-success-msg').style.display = 'none', 3000);
+        });
+        // 3. GESTION DU MENU ET DU FOOTER
+        const globalRef = dbRef(db, 'contenu_pages/global');
+        
+        // Charger les textes existants
+        onValue(globalRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById('nav-home').value = data.navHome || "Accueil";
+                document.getElementById('nav-shop').value = data.navShop || "Boutique";
+                document.getElementById('nav-about').value = data.navAbout || "À propos";
+                document.getElementById('footer-text').value = data.footerText || "© 2026 K.BIG SOLAR ENERGY";
+            }
+        });
+
+        // Sauvegarder les modifications
+        document.getElementById('save-global-btn').addEventListener('click', async () => {
+            await update(globalRef, {
+                navHome: document.getElementById('nav-home').value,
+                navShop: document.getElementById('nav-shop').value,
+                navAbout: document.getElementById('nav-about').value,
+                footerText: document.getElementById('footer-text').value
+            });
+            document.getElementById('global-success-msg').style.display = 'block';
+            setTimeout(() => document.getElementById('global-success-msg').style.display = 'none', 3000);
         });
     </script>
 </body>
