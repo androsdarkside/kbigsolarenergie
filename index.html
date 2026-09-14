@@ -12,35 +12,47 @@
             <img src="logo.jpg" alt="Logo K.BIG Solar"> 
         </div>
         <nav class="menu">
-            <a href="index.html" class="btn-menu">HOME</a>
-            <a href="shop.html" class="btn-menu">SHOP</a>
-            <a href="#about" class="btn-menu">ABOUT</a> 
+            <a href="index.html">Accueil</a>
+            <a href="shop.html">Boutique</a>
+            <a href="#about">À propos</a>
+            <a href="shop.html" class="btn-menu">Voir les offres</a> 
         </nav>
     </header>
 
-    <main>
-        <!-- On donne un ID (identifiant) à chaque texte pour que Javascript puisse les remplacer -->
-        <section id="about" class="about-section">
-            <h2 id="dyn-titre1">Chargement...</h2>
-            <p id="dyn-texte1">Veuillez patienter...</p>
-        </section>           
-                
-        <section class="about-section">
-            <h2 id="dyn-titre2">Chargement...</h2>
-            <p id="dyn-texte2">Veuillez patienter...</p>
-        </section>
-    
-        <section class="about-section">
-            <h2 id="dyn-titre3">Chargement...</h2>
-            <p id="dyn-texte3">Veuillez patienter...</p>
-        </section>       
+    <!-- En-tête Principal -->
+    <section class="hero">
+        <h1 id="dyn-titre1">Power Your Life With Clean Energy</h1>
+        <p id="dyn-texte1">Discover quality solar products and solutions that help you save money and enjoy reliable power.</p>
+        <a href="shop.html" class="btn-primary">Découvrir nos équipements</a>
+    </section>
+
+    <!-- Bloc Flottant type "Figma" -->
+    <div class="floating-features">
+        <div class="feature-item">
+            <h3>Énergie 100% Verte</h3>
+            <p>Réduisez votre empreinte carbone et votre dépendance au réseau électrique.</p>
+        </div>
+        <div class="feature-item">
+            <h3 id="dyn-titre2">Why Choose Us?</h3>
+            <p id="dyn-texte2">We offer quality products, affordable solutions, and professional service.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Support Garanti</h3>
+            <p>Une équipe d'experts à votre écoute pour des solutions sur mesure.</p>
+        </div>
+    </div>
+
+    <!-- Section À propos / Mission -->
+    <main style="text-align: center; max-width: 800px; margin: 100px auto;">
+        <h2 id="dyn-titre3" style="font-size: 2.5rem; margin-bottom: 20px; color: #0f172a;">Welcome to K.BIG</h2>
+        <p id="dyn-texte3" style="font-size: 1.1rem; color: #64748b;">K.BIG Solar Energy is dedicated to providing quality solar energy products and solutions that help individuals, families, and businesses enjoy reliable power.</p>
     </main>
 
     <footer>
-        <p>© 2026 K.BIG SOLAR ENERGY · Tous droits réservés</p>
+        <p>© 2026 K.BIG SOLAR ENERGY · hello@kbigsolar.com</p>
     </footer>
 
-    <!-- Script de récupération des textes en temps réel -->
+    <!-- Script de récupération Firebase pour les textes dynamiques -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -49,35 +61,20 @@
             apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
             authDomain: "k-big-solar-energie.firebaseapp.com",
             databaseURL: "https://k-big-solar-energie-default-rtdb.firebaseio.com",
-            projectId: "k-big-solar-energie",
-            storageBucket: "k-big-solar-energie.firebasestorage.app",
-            messagingSenderId: "678658108783",
-            appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
+            projectId: "k-big-solar-energie"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // On écoute les modifications sur le nœud "contenu_pages/accueil"
-        const textsRef = ref(db, 'contenu_pages/accueil');
-        
-        onValue(textsRef, (snapshot) => {
+        onValue(ref(db, 'contenu_pages/accueil'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                
-                // Remplacement dynamique du texte sur la page
-                document.getElementById('dyn-titre1').innerText = data.titre1 || "";
-                document.getElementById('dyn-texte1').innerText = data.texte1 || "";
-                
-                document.getElementById('dyn-titre2').innerText = data.titre2 || "";
-                document.getElementById('dyn-texte2').innerText = data.texte2 || "";
-                
-                document.getElementById('dyn-titre3').innerText = data.titre3 || "";
-                document.getElementById('dyn-texte3').innerText = data.texte3 || "";
-            } else {
-                // S'il n'y a pas encore de texte dans la base, on met un texte par défaut
-                document.getElementById('dyn-titre1').innerText = "Welcome to K.BIG Solar Energy";
-                document.getElementById('dyn-texte1').innerText = "Modifiez ce texte depuis l'administration.";
+                if(data.titre1) document.getElementById('dyn-titre1').innerText = data.titre1;
+                if(data.texte1) document.getElementById('dyn-texte1').innerText = data.texte1;
+                if(data.titre2) document.getElementById('dyn-titre2').innerText = data.titre2;
+                if(data.texte2) document.getElementById('dyn-texte2').innerText = data.texte2;
+                if(data.titre3) document.getElementById('dyn-titre3').innerText = data.titre3;
+                if(data.texte3) document.getElementById('dyn-texte3').innerText = data.texte3;
             }
         });
     </script>
