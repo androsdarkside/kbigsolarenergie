@@ -12,9 +12,9 @@
             <img src="logo.jpg" alt="Logo K.BIG Solar"> 
         </div>
         <nav class="menu">
-            <a href="index.html">Accueil</a>
-            <a href="shop.html">Boutique</a>
-            <a href="#about">À propos</a>
+            <a href="index.html" id="dyn-nav-home">Accueil</a>
+            <a href="shop.html" id="dyn-nav-shop">Boutique</a>
+            <a href="index.html#about" id="dyn-nav-about">À propos</a>
             <a href="shop.html" class="btn-menu">Voir les offres</a> 
         </nav>
     </header>
@@ -49,7 +49,7 @@
     </main>
 
     <footer>
-        <p>© 2026 K.BIG SOLAR ENERGY · hello@kbigsolar.com</p>
+        <p id="dyn-footer">© 2026 K.BIG SOLAR ENERGY</p>
     </footer>
 
     <!-- Script de récupération Firebase pour les textes dynamiques -->
@@ -75,6 +75,16 @@
                 if(data.texte2) document.getElementById('dyn-texte2').innerText = data.texte2;
                 if(data.titre3) document.getElementById('dyn-titre3').innerText = data.titre3;
                 if(data.texte3) document.getElementById('dyn-texte3').innerText = data.texte3;
+            }
+        });
+        // Écoute des éléments globaux (Menu et Footer)
+        onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if(data.navHome) document.getElementById('dyn-nav-home').innerText = data.navHome;
+                if(data.navShop) document.getElementById('dyn-nav-shop').innerText = data.navShop;
+                if(data.navAbout) document.getElementById('dyn-nav-about').innerText = data.navAbout;
+                if(data.footerText) document.getElementById('dyn-footer').innerText = data.footerText;
             }
         });
     </script>
