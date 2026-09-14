@@ -19,24 +19,67 @@
     </header>
 
     <main>
+        <!-- On donne un ID (identifiant) à chaque texte pour que Javascript puisse les remplacer -->
         <section id="about" class="about-section">
-            <h2>Welcome to K.BIG Solar Energy</h2>
-            <p>K.BIG Solar Energy is dedicated to providing quality solar energy products and solutions that help individuals, families, and businesses enjoy reliable power while reducing their dependence on the national electricity grid. From solar panels and batteries to solar TVs, fans, lights, and complete solar power systems, we provide practical energy solutions designed to meet your everyday needs.</p>
+            <h2 id="dyn-titre1">Chargement...</h2>
+            <p id="dyn-texte1">Veuillez patienter...</p>
         </section>           
                 
         <section class="about-section">
-            <h2>Your Life with Clean Energy</h2>
-            <p>Discover quality solar products and solutions that help you save money, enjoy reliable power, and reduce your dependence on the national grid.</p>
+            <h2 id="dyn-titre2">Chargement...</h2>
+            <p id="dyn-texte2">Veuillez patienter...</p>
         </section>
     
         <section class="about-section">
-            <h2>Why Choose K.BIG Solar Energy?</h2>
-            <p>We offer quality products, affordable solutions, professional service, and dependable customer support to meet your energy needs.</p>
+            <h2 id="dyn-titre3">Chargement...</h2>
+            <p id="dyn-texte3">Veuillez patienter...</p>
         </section>       
     </main>
 
     <footer>
         <p>© 2026 K.BIG SOLAR ENERGY · Tous droits réservés</p>
     </footer>
+
+    <!-- Script de récupération des textes en temps réel -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
+            authDomain: "k-big-solar-energie.firebaseapp.com",
+            databaseURL: "https://k-big-solar-energie-default-rtdb.firebaseio.com",
+            projectId: "k-big-solar-energie",
+            storageBucket: "k-big-solar-energie.firebasestorage.app",
+            messagingSenderId: "678658108783",
+            appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // On écoute les modifications sur le nœud "contenu_pages/accueil"
+        const textsRef = ref(db, 'contenu_pages/accueil');
+        
+        onValue(textsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                
+                // Remplacement dynamique du texte sur la page
+                document.getElementById('dyn-titre1').innerText = data.titre1 || "";
+                document.getElementById('dyn-texte1').innerText = data.texte1 || "";
+                
+                document.getElementById('dyn-titre2').innerText = data.titre2 || "";
+                document.getElementById('dyn-texte2').innerText = data.texte2 || "";
+                
+                document.getElementById('dyn-titre3').innerText = data.titre3 || "";
+                document.getElementById('dyn-texte3').innerText = data.texte3 || "";
+            } else {
+                // S'il n'y a pas encore de texte dans la base, on met un texte par défaut
+                document.getElementById('dyn-titre1').innerText = "Welcome to K.BIG Solar Energy";
+                document.getElementById('dyn-texte1').innerText = "Modifiez ce texte depuis l'administration.";
+            }
+        });
+    </script>
 </body>
 </html>
