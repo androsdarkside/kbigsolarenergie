@@ -1,41 +1,93 @@
-body {
-       font-family: Arial, sans-serif;
-       background-color: #f4f7f6;
-       display: flex;
-       justify-content: center;
-       padding: 50px;
-       margin: 0;
-   }
-   .container {
-       background-color: white;
-       padding: 30px;
-       border-radius: 8px;
-       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-       width: 100%;
-       max-width: 500px;
-   }
-   h2 { text-align: center; color: #333; }
-   .form-group { margin-bottom: 15px; }
-   label { display: block; margin-bottom: 5px; font-weight: bold; }
-   input[type="text"], input[type="number"], input[type="email"], input[type="password"], input[type="file"] {
-       width: 100%;
-       padding: 10px;
-       border: 1px solid #ccc;
-       border-radius: 4px;
-       box-sizing: border-box;
-   }
-   button {
-       width: 100%;
-       padding: 10px;
-       background-color: #e67e22; 
-       color: white;
-       border: none;
-       border-radius: 4px;
-       cursor: pointer;
-       font-size: 16px;
-   }
-   button:hover { background-color: #d35400; }
-   #dashboard-section { display: none; }
-lor: #d35400; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-     #dashboard-section { display: none; }}
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333333;
+    line-height: 1.6;
+}
+
+/* Header moderne et fixe */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-menu {
+    color: #ff5100;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 2px solid #ff5100;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-menu:hover {
+    background-color: #ff5100;
+    color: #ffffff !important;
+}
+
+/* Sections "About" modernisées sous forme de cartes élégantes */
+main {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.about-section {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    border-left: 5px solid #ff5100;
+    text-align: left;
+}
+
+.about-section h2 {
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.about-section p {
+    color: #666666;
+    font-size: 16px;
+}
+
+/* Footer moderne */
+footer {
+    text-align: center;
+    padding: 30px;
+    background-color: #1a1a1a;
+    color: #bbbbbb;
+    margin-top: 60px;
+    font-size: 14px;
+}
