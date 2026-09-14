@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique Solaire</title>
+<style>
+body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 20px; }
+header { text-align: center; margin-bottom: 30px; }
+
+/* La barre de recherche */
+#search-bar {
+width: 100%;
+max-width: 500px;
+padding: 12px;
+font-size: 16px;
+border: 2px solid #e67e22;
+border-radius: 25px;
+outline: none;
+}
+
+/* La grille des produits */
+#products-container {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 20px;
+max-width: 1000px;
+margin: 0 auto;
+}
+
+/* Les cartes articles avec fond blanc /
+.card {
+background-color: white;
+border-radius: 8px;
+padding: 15px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+text-align: center;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.card img {
+width: 100%;
+height: 200px;
+object-fit: contain; / Garde les proportions de l'image /
+background-color: white; / Force le fond blanc */
+border-radius: 4px;
+margin-bottom: 15px;
+}
+.card h3 { color: #333; font-size: 18px; margin: 0 0 10px; }
+.card .price { color: #e67e22; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
+
+/* Le bouton WhatsApp /
+.whatsapp-btn {
+display: inline-block;
+width: 100%;
+padding: 10px;
+background-color: #25D366; / Vert officiel de WhatsApp */
+color: white;
+text-decoration: none;
+border-radius: 4px;
+font-weight: bold;
+box-sizing: border-box;
+transition: background-color 0.3s;
+}
+.whatsapp-btn:hover { background-color: #128C7E; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Équipements Solaires</h1>
+<input type="text" id="search-bar" placeholder="Rechercher un panneau, un onduleur...">
+</header>
+
+<div id="products-container">
+<!-- Les articles s'afficheront ici automatiquement -->
+</div>
+
+<script type="module">
+// 1. Importation Firebase (Juste Firestore)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+// 2. TA CONFIGURATION FIREBASE (À coller ici)
+const firebaseConfig = {
+apiKey: "TON_API_KEY",
+authDomain: "k-big-solar-energie.firebaseapp.com",
+projectId: "k-big-solar-energie",
+};
+
+// 3. LE NUMÉRO WHATSAPP DU VENDEUR
+const numeroWhatsApp = "233 24 191 3309
+"; // Modifie avec le vrai numéro (sans le +)
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const productsContainer = document.getElementById('products-container');
+const searchBar = document.getElementById('search-bar');
+let tousLesArticles = [];
+
+// Récupérer les articles
+async function chargerArticles() {
+const querySnapshot = await getDocs(collection(db, "articles_solaires"));
+querySnapshot.forEach((doc) => {
+tousLesArticles.push(doc.data());
+});
+afficherArticles(tousLesArticles);
+}
+
+// Afficher les articles et le bouton WhatsApp
+function afficherArticles(articles) {
+productsContainer.innerHTML = '';
+
+if (articles.length === 0) {
+productsContainer.innerHTML = '<p style="text-align:center; grid-column: 1 / -1;">Aucun article trouvé.</p>';
+return;
+}
+
+articles.forEach(article => {
+const card = document.createElement('div');
+card.className = 'card';
+
+// On crée le message pré-rempli pour WhatsApp
+const texteMessage = Bonjour, je suis intéressé par l'équipement suivant : ${article.titre} au prix de ${article.prix} FCFA.;
+const lienWhatsApp = https://wa.me/233 24 191 3309${numeroWhatsApp}?text=${encodeURIComponent(texteMessage)};
+
+card.innerHTML = &lt;img src="${article.imageUrl}" alt="${article.titre}"&gt; &lt;h3&gt;${article.titre}</h3>
+<p class="price">${article.prix} FCFA&lt;/p&gt; &lt;a href="${lienWhatsApp}" target="_blank" class="whatsapp-btn"&gt;Commander sur WhatsApp&lt;/a&gt;;
+productsContainer.appendChild(card);
+});
+}
+
+// Barre de recherche
+searchBar.addEventListener('input', (e) => {
+const motCle = e.target.value.toLowerCase();
+const articlesFiltres = tousLesArticles.filter(article =>
+article.titre.toLowerCase().includes(motCle)
+);
+afficherArticles(articlesFiltres);
+});
+
+// Lancement
+chargerArticles();
+</script>
+</body>
+</html>
