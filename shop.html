@@ -49,31 +49,48 @@
         const loading = document.getElementById('loading');
         
         onValue(ref(db, 'articles_solaires'), (snapshot) => {
-            container.innerHTML = "";
-            loading.style.display = 'none';
+    container.innerHTML = "";
+    loading.style.display = 'none';
 
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                Object.keys(data).forEach((key) => {
-                    const article = data[key];
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    
-                    // Structure de la carte façon "Figma Car Rental"
-                    card.innerHTML = `
-                        <img src="${article.imageUrl}" alt="${article.titre}">
-                        <h3>${article.titre}</h3>
-                        <div class="price-row">
-                            <span class="price">${article.prix} FCFA</span>
-                            <a href="#" class="btn-card">Commander</a>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } else {
-                container.innerHTML = '<p style="text-align: center; width: 100%;">Aucun équipement disponible.</p>';
-            }
+    if (snapshot.exists()) {
+        const data = snapshot.val();
+        const categories = {};
+
+        // 1. Trier les articles dans leurs catégories respectives
+        Object.keys(data).forEach(key => {
+            const article = data[key];
+            const cat = article.categorie || "Autres";
+            if(!categories[cat]) categories[cat] = [];
+            categories[cat].push(article);
         });
+
+        // 2. Créer visuellement les sections
+        Object.keys(categories).forEach(cat => {
+            // Création du titre de la section
+            const titreSection = document.createElement('h2');
+            titreSection.innerText = cat;
+            titreSection.style.cssText = "width: 100%; margin: 50px 0 20px; font-size: 2rem; color: #0f172a; border-bottom: 2px solid #ff5100; padding-bottom: 10px;";
+            container.appendChild(titreSection);
+
+            // Ajout des cartes sous le titre
+            categories[cat].forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${article.imageUrl}" alt="${article.titre}">
+                    <h3>${article.titre}</h3>
+                    <div class="price-row">
+                        <span class="price">${article.prix} FCFA</span>
+                        <a href="#" class="btn-card">Commander</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        });
+    } else {
+        container.innerHTML = '<p style="text-align: center; width: 100%;">Aucun équipement disponible.</p>';
+    }
+});
     </script>
 </body>
 </html>
