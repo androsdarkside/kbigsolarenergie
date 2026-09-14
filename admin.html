@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - Boutique Solaire</title>
+    <title>Administration - Solar Shop</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 30px; margin: 0; }
         .container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
@@ -23,107 +23,110 @@
 </head>
 <body>
     <div class="container">
-        <!-- SECTION 1 : CONNEXION -->
+        <!-- SECTION 1 : LOGIN -->
         <div id="login-section">
-            <h2>Connexion Sécurisée</h2>
+            <h2>Secure Login</h2>
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" id="email" placeholder="email@client.com">
             </div>
             <div class="form-group">
-                <label>Mot de passe</label>
+                <label>Password</label>
                 <input type="password" id="password" placeholder="••••••••">
             </div>
-            <button id="login-btn">Se connecter</button>
-            <p id="login-error" style="color: red; text-align: center; display: none;">Identifiants incorrects.</p>
+            <button id="login-btn">Log In</button>
+            <p id="login-error" style="color: red; text-align: center; display: none;">Incorrect credentials.</p>
         </div>
 
-        <!-- SECTION 2 : TABLEAU DE BORD -->
+        <!-- SECTION 2 : DASHBOARD -->
         <div id="dashboard-section">
             
-            <div class="section-header">1. Gérer les articles de la boutique</div>
+            <div class="section-header">1. Manage Shop Items</div>
             
             <div class="form-group" style="margin-top: 20px;">
-                <label>Titre de l'article</label>
+                <label>Item Title</label>
                 <input type="text" id="titre">
             </div>
             <div class="form-group">
-                <label>Prix (FCFA)</label>
+                <label>Price (FCFA)</label>
                 <input type="number" id="prix">
             </div>
             <div class="form-group">
-    <label>Catégorie d'équipement</label>
-    <select id="categorie" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        <option value="Panneaux Solaires">Panneaux Solaires</option>
-        <option value="Onduleurs Hybrides">Onduleurs Hybrides</option>
-        <option value="Batteries">Batteries de Stockage</option>
-        <option value="Accessoires">Accessoires & Câblage</option>
-    </select>
-</div>
+                <label>Equipment Category</label>
+                <select id="categorie" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="Panneaux Solaires">Solar Panels</option>
+                    <option value="Onduleurs Hybrides">Hybrid Inverters</option>
+                    <option value="Batteries">Storage Batteries</option>
+                    <option value="Accessoires">Accessories & Cables</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label>Image</label>
                 <input type="file" id="image" accept="image/*">
             </div>
-            <button id="add-item-btn">Publier l'article</button>
-            <p id="success-msg" style="color: green; text-align: center; display: none;">Article publié !</p>
+            <button id="add-item-btn">Publish Item</button>
+            <p id="success-msg" style="color: green; text-align: center; display: none;">Item published!</p>
 
             <div id="admin-list" style="margin-top: 20px;"></div>
 
-            <!-- NOUVELLE SECTION : GESTION DES TEXTES DU SITE -->
-            <div class="section-header">2. Modifier les textes de l'Accueil</div>
+            <!-- SECTION 3 : EDIT HOME TEXTS -->
+            <div class="section-header">2. Edit Home Page Texts</div>
             
             <div style="margin-top: 20px;">
                 <div class="form-group">
-                    <label>Titre 1</label>
+                    <label>Title 1</label>
                     <input type="text" id="titre1">
-                    <label>Texte 1</label>
+                    <label>Text 1</label>
                     <textarea id="texte1" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Titre 2</label>
+                    <label>Title 2</label>
                     <input type="text" id="titre2">
-                    <label>Texte 2</label>
+                    <label>Text 2</label>
                     <textarea id="texte2" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Titre 3</label>
+                    <label>Title 3</label>
                     <input type="text" id="titre3">
-                    <label>Texte 3</label>
+                    <label>Text 3</label>
                     <textarea id="texte3" rows="3"></textarea>
                 </div>
-                <button id="save-texts-btn" style="background-color: #27ae60;">Mettre à jour le site</button>
-                <p id="text-success-msg" style="color: green; text-align: center; display: none;">Textes mis à jour !</p>
+                <button id="save-texts-btn" style="background-color: #27ae60;">Update Texts</button>
+                <p id="text-success-msg" style="color: green; text-align: center; display: none;">Texts updated!</p>
             </div>
-<!-- NOUVELLE SECTION : GESTION GLOBALE (Menu & Footer) -->
-            <div class="section-header">3. Navigation & Pied de page</div>
+
+            <!-- SECTION 4 : NAVIGATION & FOOTER -->
+            <div class="section-header">3. Navigation & Footer</div>
             <div style="margin-top: 20px;">
                 <div class="form-group">
-                    <label>Menu 1 (Accueil)</label>
+                    <label>Menu 1 (Home)</label>
                     <input type="text" id="nav-home">
                 </div>
                 <div class="form-group">
-                    <label>Menu 2 (Boutique)</label>
+                    <label>Menu 2 (Shop)</label>
                     <input type="text" id="nav-shop">
                 </div>
                 <div class="form-group">
-                    <label>Menu 3 (À propos)</label>
+                    <label>Menu 3 (About)</label>
                     <input type="text" id="nav-about">
                 </div>
                 <div class="form-group">
-                    <label>Texte du pied de page (Footer)</label>
+                    <label>Footer Text</label>
                     <input type="text" id="footer-text">
                 </div>
-                <button id="save-global-btn" style="background-color: #27ae60;">Mettre à jour Menu & Footer</button>
-                <p id="global-success-msg" style="color: green; text-align: center; display: none;">Éléments mis à jour !</p>
+                <button id="save-global-btn" style="background-color: #27ae60;">Update Menu & Footer</button>
+                <p id="global-success-msg" style="color: green; text-align: center; display: none;">Elements updated!</p>
             </div>
+
             <hr style="margin: 20px 0;">
-<div class="form-group">
-    <label>Image de fond de l'accueil</label>
-    <input type="file" id="hero-image-input" accept="image/*">
-    <button id="save-hero-img-btn" style="background-color: #2980b9;">Changer l'image de fond</button>
-</div>
+            <div class="form-group">
+                <label>Home Background Image (Hero)</label>
+                <input type="file" id="hero-image-input" accept="image/*">
+                <button id="save-hero-img-btn" style="background-color: #2980b9;">Change Background Image</button>
+            </div>
+
             <br>
-            <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 40px;">Se déconnecter</button>
+            <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 40px;">Log Out</button>
         </div>
     </div>
 
@@ -153,7 +156,7 @@
         const logoutBtn = document.getElementById('logout-btn');
         const adminList = document.getElementById('admin-list');
 
-        // Authentification
+        // Authentication
         loginBtn.addEventListener('click', () => {
             signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
                 .then(() => {
@@ -170,7 +173,7 @@
             });
         });
 
-        // 1. GESTION DES ARTICLES
+        // 1. MANAGE ITEMS
         onValue(dbRef(db, 'articles_solaires'), (snapshot) => {
             adminList.innerHTML = "";
             if (snapshot.exists()) {
@@ -189,7 +192,7 @@
 
                 document.querySelectorAll('.btn-delete').forEach(button => {
                     button.addEventListener('click', async (e) => {
-                        if (confirm("Supprimer cet article ?")) {
+                        if (confirm("Delete this item?")) {
                             await remove(dbRef(db, 'articles_solaires/' + e.target.getAttribute('data-id')));
                         }
                     });
@@ -201,40 +204,37 @@
             const titre = document.getElementById('titre').value;
             const prix = document.getElementById('prix').value;
             const file = document.getElementById('image').files[0];
-            if (!titre || !prix || !file) return alert("Remplissez tout !");
+            if (!titre || !prix || !file) return alert("Please fill in all fields!");
             
-            document.getElementById('add-item-btn').innerText = "Envoi...";
+            document.getElementById('add-item-btn').innerText = "Uploading...";
             try {
                 const formData = new FormData(); formData.append("image", file);
                 const response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, { method: "POST", body: formData });
                 const data = await response.json();
                 
-               
                 await push(dbRef(db, 'articles_solaires'), { titre: titre, prix: parseFloat(prix), categorie: document.getElementById('categorie').value, imageUrl: data.data.url, dateAjout: new Date().toISOString()});
                 document.getElementById('titre').value = ''; document.getElementById('prix').value = '';
                 document.getElementById('success-msg').style.display = 'block';
                 setTimeout(() => document.getElementById('success-msg').style.display = 'none', 3000);
-            } catch (e) { alert("Erreur"); }
-            document.getElementById('add-item-btn').innerText = "Publier l'article";
+            } catch (e) { alert("Error uploading item."); }
+            document.getElementById('add-item-btn').innerText = "Publish Item";
         });
 
-        // 2. GESTION DES TEXTES DU SITE
+        // 2. EDIT TEXTS
         const textsRef = dbRef(db, 'contenu_pages/accueil');
         
-        // Charger les textes existants dans les champs
         onValue(textsRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                document.getElementById('titre1').value = data.titre1 || "Welcome to K.BIG Solar Energy";
-                document.getElementById('texte1').value = data.texte1 || "K.BIG Solar Energy is dedicated...";
-                document.getElementById('titre2').value = data.titre2 || "Your Life with Clean Energy";
-                document.getElementById('texte2').value = data.texte2 || "Discover quality solar products...";
-                document.getElementById('titre3').value = data.titre3 || "Why Choose K.BIG Solar Energy?";
-                document.getElementById('texte3').value = data.texte3 || "We offer quality products...";
+                document.getElementById('titre1').value = data.titre1 || "Power Your Life With Clean Energy";
+                document.getElementById('texte1').value = data.texte1 || "Discover quality solar products...";
+                document.getElementById('titre2').value = data.titre2 || "Why Choose Us?";
+                document.getElementById('texte2').value = data.texte2 || "We offer quality products...";
+                document.getElementById('titre3').value = data.titre3 || "Welcome to K.BIG";
+                document.getElementById('texte3').value = data.texte3 || "K.BIG Solar Energy is dedicated...";
             }
         });
 
-        // Sauvegarder les modifications
         document.getElementById('save-texts-btn').addEventListener('click', async () => {
             await update(textsRef, {
                 titre1: document.getElementById('titre1').value,
@@ -247,21 +247,20 @@
             document.getElementById('text-success-msg').style.display = 'block';
             setTimeout(() => document.getElementById('text-success-msg').style.display = 'none', 3000);
         });
-        // 3. GESTION DU MENU ET DU FOOTER
+
+        // 3. NAVIGATION & FOOTER
         const globalRef = dbRef(db, 'contenu_pages/global');
         
-        // Charger les textes existants
         onValue(globalRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                document.getElementById('nav-home').value = data.navHome || "Accueil";
-                document.getElementById('nav-shop').value = data.navShop || "Boutique";
-                document.getElementById('nav-about').value = data.navAbout || "À propos";
+                document.getElementById('nav-home').value = data.navHome || "Home";
+                document.getElementById('nav-shop').value = data.navShop || "Shop";
+                document.getElementById('nav-about').value = data.navAbout || "About";
                 document.getElementById('footer-text').value = data.footerText || "© 2026 K.BIG SOLAR ENERGY";
             }
         });
 
-        // Sauvegarder les modifications
         document.getElementById('save-global-btn').addEventListener('click', async () => {
             await update(globalRef, {
                 navHome: document.getElementById('nav-home').value,
@@ -272,24 +271,26 @@
             document.getElementById('global-success-msg').style.display = 'block';
             setTimeout(() => document.getElementById('global-success-msg').style.display = 'none', 3000);
         });
+
+        // 4. BACKGROUND IMAGE
         document.getElementById('save-hero-img-btn').addEventListener('click', async () => {
-    const file = document.getElementById('hero-image-input').files[0];
-    if (!file) return alert("Veuillez sélectionner une image !");
-    
-    document.getElementById('save-hero-img-btn').innerText = "Envoi en cours...";
-    try {
-        const formData = new FormData(); 
-        formData.append("image", file);
-        const response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, { method: "POST", body: formData });
-        const data = await response.json();
-        
-        await update(dbRef(db, 'contenu_pages/global'), { heroImage: data.data.url });
-        alert("Image de fond mise à jour avec succès !");
-    } catch (e) { 
-        alert("Erreur lors de l'envoi de l'image."); 
-    }
-    document.getElementById('save-hero-img-btn').innerText = "Changer l'image de fond";
-});
+            const file = document.getElementById('hero-image-input').files[0];
+            if (!file) return alert("Please select an image!");
+            
+            document.getElementById('save-hero-img-btn').innerText = "Uploading...";
+            try {
+                const formData = new FormData(); 
+                formData.append("image", file);
+                const response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, { method: "POST", body: formData });
+                const data = await response.json();
+                
+                await update(dbRef(db, 'contenu_pages/global'), { heroImage: data.data.url });
+                alert("Background image updated successfully!");
+            } catch (e) { 
+                alert("Error uploading image."); 
+            }
+            document.getElementById('save-hero-img-btn').innerText = "Change Background Image";
+        });
     </script>
 </body>
 </html>
