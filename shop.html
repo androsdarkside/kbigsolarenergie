@@ -5,60 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boutique - K.BIG Solar Energy</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Styles spécifiques pour la grille de la boutique */
-        .shop-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .shop-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #1a1a1a;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            overflow: hidden;
-            text-align: center;
-            padding: 20px;
-            transition: transform 0.2s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .card h3 {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        .card p {
-            color: #ff5100;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .no-articles {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 18px;
-            grid-column: 1 / -1;
-            padding: 40px;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -66,26 +12,26 @@
             <img src="logo.jpg" alt="Logo K.BIG Solar"> 
         </div>
         <nav class="menu">
-            <a href="index.html" class="btn-menu">HOME</a>
-            <a href="shop.html" class="btn-menu">SHOP</a>
-            <a href="index.html#about" class="btn-menu">ABOUT</a> 
+            <a href="index.html">Accueil</a>
+            <a href="shop.html" style="color: #ff5100;">Boutique</a>
+            <a href="index.html#about">À propos</a>
         </nav>
     </header>
 
     <div class="shop-container">
-        <h1 class="shop-title">Nos Équipements Solaires</h1>
+        <h1 class="section-title">Nos Équipements Solaires</h1>
         
         <div id="articles-container" class="grid">
-            <!-- Les articles publiés depuis admin.html s'afficheront ici dynamiquement -->
+            <!-- Injecté par Javascript -->
         </div>
-        <p id="loading" class="no-articles">Chargement des équipements...</p>
+        <p id="loading" style="text-align: center; color: #64748b; font-size: 1.2rem; margin-top: 50px;">Chargement du catalogue...</p>
     </div>
 
     <footer>
         <p>© 2026 K.BIG SOLAR ENERGY · Tous droits réservés</p>
     </footer>
 
-    <!-- Script de récupération Firebase Realtime Database -->
+    <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -94,21 +40,15 @@
             apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
             authDomain: "k-big-solar-energie.firebaseapp.com",
             databaseURL: "https://k-big-solar-energie-default-rtdb.firebaseio.com",
-            projectId: "k-big-solar-energie",
-            storageBucket: "k-big-solar-energie.firebasestorage.app",
-            messagingSenderId: "678658108783",
-            appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
+            projectId: "k-big-solar-energie"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
         const container = document.getElementById('articles-container');
         const loading = document.getElementById('loading');
-
-        const articlesRef = ref(db, 'articles_solaires');
         
-        onValue(articlesRef, (snapshot) => {
+        onValue(ref(db, 'articles_solaires'), (snapshot) => {
             container.innerHTML = "";
             loading.style.display = 'none';
 
@@ -116,18 +56,22 @@
                 const data = snapshot.val();
                 Object.keys(data).forEach((key) => {
                     const article = data[key];
-
                     const card = document.createElement('div');
                     card.className = 'card';
+                    
+                    // Structure de la carte façon "Figma Car Rental"
                     card.innerHTML = `
                         <img src="${article.imageUrl}" alt="${article.titre}">
                         <h3>${article.titre}</h3>
-                        <p>${article.prix} FCFA</p>
+                        <div class="price-row">
+                            <span class="price">${article.prix} FCFA</span>
+                            <a href="#" class="btn-card">Commander</a>
+                        </div>
                     `;
                     container.appendChild(card);
                 });
             } else {
-                container.innerHTML = '<p class="no-articles">Aucun équipement disponible pour le moment.</p>';
+                container.innerHTML = '<p style="text-align: center; width: 100%;">Aucun équipement disponible.</p>';
             }
         });
     </script>
