@@ -86,11 +86,11 @@
                 if(data.navShop) document.getElementById('dyn-nav-shop').innerText = data.navShop;
                 if(data.navAbout) document.getElementById('dyn-nav-about').innerText = data.navAbout;
                 if(data.footerText) document.getElementById('dyn-footer').innerText = data.footerText;
-                
-            }
-            if(data.heroImage) {
+                if(data.heroImage) {
                     document.querySelector('.hero').style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('${data.heroImage}')`;
                 }
+            }
+            
             if(data.logoUrl) {
     document.getElementById('dyn-logo').src = data.logoUrl;
 }
