@@ -3,81 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K-Big Solar Energie - Boutique</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { color: #2c3e50; }
-        .grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 280px; padding: 15px; text-align: center; }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; }
-        .card h3 { color: #333; margin: 15px 0 10px; }
-        .card p { color: #e67e22; font-weight: bold; font-size: 18px; }
-        .no-articles { text-align: center; color: #7f8c8d; font-size: 18px; margin-top: 50px; }
-    </style>
+    <title>K.BIG Solar Energy - Accueil</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header>
-        <h1>K-Big Solar Energie</h1>
-        <p>Vos équipements solaires de qualité au meilleur prix</p>
+        <div class="logo"> 
+            <img src="logo.jpg" alt="Logo K.BIG Solar"> 
+        </div>
+        <nav class="menu">
+            <a href="index.html" class="btn-menu">HOME</a>
+            <a href="shop.html" class="btn-menu">SHOP</a>
+            <a href="#about" class="btn-menu">ABOUT</a> 
+        </nav>
     </header>
 
-    <div id="articles-container" class="grid">
-        <!-- Les articles s'afficheront ici automatiquement -->
-    </div>
-
-    <p id="loading" class="no-articles">Chargement des équipements...</p>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-
-        // Ta configuration Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
-            authDomain: "k-big-solar-energie.firebaseapp.com",
-            databaseURL: "https://k-big-solar-energie-default-rtdb.firebaseio.com",
-            projectId: "k-big-solar-energie",
-            storageBucket: "k-big-solar-energie.firebasestorage.app",
-            messagingSenderId: "678658108783",
-            appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        const container = document.getElementById('articles-container');
-        const loading = document.getElementById('loading');
-
-        // Écoute en temps réel de la Realtime Database
-        const articlesRef = ref(db, 'articles_solaires');
-        
-        onValue(articlesRef, (snapshot) => {
-            container.innerHTML = "";
-            loading.style.display = 'none';
-
-            if (snapshot.exists()) {
-                const data = snapshot.val();
+    <main>
+        <section id="about" class="about-section">
+            <h2>Welcome to K.BIG Solar Energy</h2>
+            <p>K.BIG Solar Energy is dedicated to providing quality solar energy products and solutions that help individuals, families, and businesses enjoy reliable power while reducing their dependence on the national electricity grid. From solar panels and batteries to solar TVs, fans, lights, and complete solar power systems, we provide practical energy solutions designed to meet your everyday needs.</p>
+        </section>           
                 
-                // Parcourir chaque article enregistré
-                Object.keys(data).forEach((key) => {
-                    const article = data[key];
+        <section class="about-section">
+            <h2>Your Life with Clean Energy</h2>
+            <p>Discover quality solar products and solutions that help you save money, enjoy reliable power, and reduce your dependence on the national grid.</p>
+        </section>
+    
+        <section class="about-section">
+            <h2>Why Choose K.BIG Solar Energy?</h2>
+            <p>We offer quality products, affordable solutions, professional service, and dependable customer support to meet your energy needs.</p>
+        </section>       
+    </main>
 
-                    // Création de la carte produit
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${article.imageUrl}" alt="${article.titre}">
-                        <h3>${article.titre}</h3>
-                        <p>${article.prix} FCFA</p>
-                    `;
-                    container.appendChild(card);
-                });
-            } else {
-                container.innerHTML = '<p class="no-articles">Aucun équipement disponible pour le moment.</p>';
-            }
-        });
-    </script>
+    <footer>
+        <p>© 2026 K.BIG SOLAR ENERGY · Tous droits réservés</p>
+    </footer>
 </body>
 </html>
