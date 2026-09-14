@@ -90,7 +90,7 @@ button:hover { background-color: #d35400; }
 </div>
 
 <script type="module">
-// 1. Importation Firebase
+// 1. Importation Firebase (SANS le Storage)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -171,7 +171,9 @@ try {
 const formData = new FormData();
 formData.append("image", imageFile);
 
-// CORRECTION : Utilisation des backticks () pour l'URL const response = await fetch(https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+// La ligne corrigée est juste en dessous, bien séparée de son commentaire
+const urlImgbb = https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY};
+const response = await fetch(urlImgbb, {
 method: "POST",
 body: formData
 });
@@ -208,5 +210,6 @@ addItemBtn.disabled = false;
 }
 });
 </script>
+
 </body>
 </html>
