@@ -90,12 +90,15 @@ button:hover { background-color: #d35400; }
 </div>
 
 <script type="module">
+
 // 1. Importation Firebase (SANS le Storage)
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 // 2. Ta configuration Firebase
+
 const firebaseConfig = {
 apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
 authDomain: "k-big-solar-energie.firebaseapp.com",
@@ -106,14 +109,17 @@ appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
 };
 
 // 3. TA CLÉ IMGBB
+
 const IMGBB_API_KEY = "fb18d4c248db51cf6f9af93c587808fa";
 
 // 4. Initialisation Firebase
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Sélection des éléments HTML
+
 const loginSection = document.getElementById('login-section');
 const dashboardSection = document.getElementById('dashboard-section');
 const loginBtn = document.getElementById('login-btn');
@@ -123,6 +129,7 @@ const addItemBtn = document.getElementById('add-item-btn');
 const successMsg = document.getElementById('success-msg');
 
 // Logique de connexion
+
 loginBtn.addEventListener('click', () => {
 const email = document.getElementById('email').value;
 const password = document.getElementById('password').value;
@@ -143,6 +150,7 @@ console.error("Erreur de connexion :", error.message);
 });
 
 // Logique de déconnexion
+
 logoutBtn.addEventListener('click', () => {
 signOut(auth).then(() => {
 loginSection.style.display = 'block';
@@ -153,6 +161,7 @@ document.getElementById('password').value = '';
 });
 
 // 5. Logique d'ajout d'article (avec ImgBB corrigé)
+
 addItemBtn.addEventListener('click', async () => {
 const titre = document.getElementById('titre').value;
 const prix = document.getElementById('prix').value;
@@ -167,11 +176,14 @@ addItemBtn.innerText = "Publication en cours...";
 addItemBtn.disabled = true;
 
 try {
+
 // Étape A : Envoyer l'image sur ImgBB
+
 const formData = new FormData();
 formData.append("image", imageFile);
 
 // La ligne corrigée est juste en dessous, bien séparée de son commentaire
+
 const urlImgbb = https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY};
 const response = await fetch(urlImgbb, {
 method: "POST",
@@ -187,6 +199,7 @@ throw new Error("L'envoi de l'image a échoué.");
 const urlImage = data.data.url;
 
 // Étape B : Enregistrer les infos dans Firebase Firestore
+
 await addDoc(collection(db, "articles_solaires"), {
 titre: titre,
 prix: parseFloat(prix),
@@ -195,6 +208,7 @@ dateAjout: new Date()
 });
 
 // Succès !
+
 successMsg.style.display = 'block';
 document.getElementById('titre').value = '';
 document.getElementById('prix').value = '';
