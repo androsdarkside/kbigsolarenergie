@@ -58,9 +58,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        // Utilisation de Realtime Database au lieu de Firestore
+        import { getDatabase, ref as dbRef, push } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-        // Ta configuration complète et corrigée
         const firebaseConfig = {
             apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
             authDomain: "k-big-solar-energie.firebaseapp.com",
@@ -73,7 +73,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app); // Connexion Realtime Database
         
         const IMGBB_API_KEY = "fb18d4c248db51cf6f9af93c587808fa";
 
@@ -126,6 +126,7 @@
             addItemBtn.disabled = true;
 
             try {
+                // 1. Envoi de l'image sur ImgBB
                 const formData = new FormData();
                 formData.append("image", imageFile);
                 const urlUpload = "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY;
@@ -135,11 +136,13 @@
 
                 if (!data.success) { throw new Error("Impossible d'envoyer l'image."); }
                 
-                await addDoc(collection(db, "articles_solaires"), {
+                // 2. Enregistrement dans la Realtime Database
+                const articlesRef = dbRef(db, 'articles_solaires');
+                await push(articlesRef, {
                     titre: titre,
                     prix: parseFloat(prix),
                     imageUrl: data.data.url,
-                    dateAjout: new Date()
+                    dateAjout: new Date().toISOString()
                 });
 
                 alert("Succès ! L'article est en ligne.");
