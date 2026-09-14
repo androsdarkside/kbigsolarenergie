@@ -93,7 +93,7 @@
                         const formattedPrice = Number(article.prix).toLocaleString('fr-FR');
 
                         // Création du message pré-rempli en anglais
-                        const message = encodeURIComponent(`Hello, I would like to order: ${article.titre} at the price of ${formattedPrice} FCFA.`);
+                        const message = encodeURIComponent(`Hello, I would like to order: ${article.titre} at the price of ${formattedPrice} GHS.`);
                         const lienWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${message}`;
 
                         card.innerHTML = `
