@@ -116,6 +116,12 @@
                 <button id="save-global-btn" style="background-color: #27ae60;">Mettre à jour Menu & Footer</button>
                 <p id="global-success-msg" style="color: green; text-align: center; display: none;">Éléments mis à jour !</p>
             </div>
+            <hr style="margin: 20px 0;">
+<div class="form-group">
+    <label>Image de fond de l'accueil</label>
+    <input type="file" id="hero-image-input" accept="image/*">
+    <button id="save-hero-img-btn" style="background-color: #2980b9;">Changer l'image de fond</button>
+</div>
             <br>
             <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 40px;">Se déconnecter</button>
         </div>
@@ -266,6 +272,24 @@
             document.getElementById('global-success-msg').style.display = 'block';
             setTimeout(() => document.getElementById('global-success-msg').style.display = 'none', 3000);
         });
+        document.getElementById('save-hero-img-btn').addEventListener('click', async () => {
+    const file = document.getElementById('hero-image-input').files[0];
+    if (!file) return alert("Veuillez sélectionner une image !");
+    
+    document.getElementById('save-hero-img-btn').innerText = "Envoi en cours...";
+    try {
+        const formData = new FormData(); 
+        formData.append("image", file);
+        const response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, { method: "POST", body: formData });
+        const data = await response.json();
+        
+        await update(dbRef(db, 'contenu_pages/global'), { heroImage: data.data.url });
+        alert("Image de fond mise à jour avec succès !");
+    } catch (e) { 
+        alert("Erreur lors de l'envoi de l'image."); 
+    }
+    document.getElementById('save-hero-img-btn').innerText = "Changer l'image de fond";
+});
     </script>
 </body>
 </html>
