@@ -4,12 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration - Boutique Solaire</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #e67e22; 
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #d35400; }
+        #dashboard-section { display: none; }
+    </style>
 </head>
 <body>
 
     <div class="container">
-
         <!-- SECTION 1 : CONNEXION -->
         <div id="login-section">
             <h2>Connexion Sécurisée</h2>
@@ -46,58 +84,19 @@
             <br>
             <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 20px;">Se déconnecter</button>
         </div>
-
-    </div>
-
-    <script src="script.js" type="module"></script>
-</body>
-</html>
-
-cript src="script.js" type="module">
-    
-    </script>
-
-</body>
-</html>
- display: none;">Identifiants incorrects.</p>
-        </div>
-
-        <!-- SECTION 2 : TABLEAU DE BORD (Ajout d'article) -->
-        <div id="dashboard-section">
-            <h2>Ajouter un équipement</h2>
-            <div class="form-group">
-                <label for="titre">Titre de l'article (ex: Panneau 400W)</label>
-                <input type="text" id="titre" required>
-            </div>
-            <div class="form-group">
-                <label for="prix">Prix (FCFA)</label>
-                <input type="number" id="prix" required>
-            </div>
-            <div class="form-group">
-                <label for="image">Image de l'article</label>
-                <input type="file" id="image" accept="image/*" required>
-            </div>
-            <button id="add-item-btn">Publier l'article</button>
-            <p id="success-msg" style="color: green; text-align: center; display: none;">Article ajouté avec succès !</p>
-
-            <br>
-            <button id="logout-btn" style="background-color: #7f8c8d; margin-top: 20px;">Se déconnecter</button>
-        </div>
-
     </div>
 
     <script type="module">
-        // 1. Importation Firebase
+        // Importations Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-        // 2. Ta configuration Firebase
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
             authDomain: "k-big-solar-energie.firebaseapp.com",
             projectId: "k-big-solar-energie",
-            storageBucket: "k-big-solar-energie.firebasestorage.app", 
             messagingSenderId: "678658108783",
             appId: "1:678658108783:web:5ac94bc5f426db6e27cc9a"
         };
@@ -106,6 +105,10 @@ cript src="script.js" type="module">
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // Clé API ImgBB (sécurisée avec des guillemets simples)
+        const IMGBB_API_KEY = "fb18d4c248db51cf6f9af93c587808fa";
+
+        // Éléments HTML
         const loginSection = document.getElementById('login-section');
         const dashboardSection = document.getElementById('dashboard-section');
         const loginBtn = document.getElementById('login-btn');
@@ -130,7 +133,6 @@ cript src="script.js" type="module">
                 .catch((error) => {
                     loginError.style.display = 'block';
                     loginBtn.innerText = "Se connecter";
-                    console.error(error.message);
                 });
         });
 
@@ -144,7 +146,7 @@ cript src="script.js" type="module">
             });
         });
 
-        // Ajout d'article ultra-sécurisé et sans blocage
+        // Ajout d'article via ImgBB
         addItemBtn.addEventListener('click', async () => {
             const titre = document.getElementById('titre').value;
             const prix = document.getElementById('prix').value;
@@ -155,82 +157,54 @@ cript src="script.js" type="module">
                 return;
             }
 
-            addItemBtn.innerText = "Publication en cours...";
+            addItemBtn.innerText = "Publication en cours... Veuillez patienter.";
             addItemBtn.disabled = true;
 
             try {
-                // Lecture simple et directe de l'image
-                const base64Image = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = (error) => reject(error);
-                    reader.readAsDataURL(imageFile);
+                // ÉTAPE 1 : Envoi à ImgBB
+                const formData = new FormData();
+                formData.append("image", imageFile);
+
+                // Construction de l'URL sans caractères spéciaux pour éviter les bugs
+                const urlUpload = "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY;
+
+                const response = await fetch(urlUpload, {
+                    method: "POST",
+                    body: formData
                 });
 
-                // Enregistrement dans Firebase Firestore
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error("Impossible d'envoyer l'image.");
+                }
+
+                const urlImage = data.data.url;
+
+                // ÉTAPE 2 : Enregistrement dans Firestore
                 await addDoc(collection(db, "articles_solaires"), {
                     titre: titre,
                     prix: parseFloat(prix),
-                    imageUrl: base64Image,
+                    imageUrl: urlImage,
                     dateAjout: new Date()
                 });
 
-                // Si tout se passe bien, une boîte de dialogue s'ouvre !
-                alert("Article publié avec succès !");
+                alert("Succès ! L'article est en ligne.");
                 
                 document.getElementById('titre').value = '';
                 document.getElementById('prix').value = '';
                 document.getElementById('image').value = '';
+                
                 successMsg.style.display = 'block';
                 setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
 
             } catch (error) {
-                console.error("Erreur :", error);
-                alert("Erreur lors de la publication : " + error.message);
+                alert("Une erreur s'est produite : " + error.message);
             } finally {
                 addItemBtn.innerText = "Publier l'article";
                 addItemBtn.disabled = false;
             }
         });
     </script>
-
-</body>
-</html>
-     canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            resolve(canvas.toDataURL('image/jpeg', 0.7));
-                        };
-                        img.onerror = reject;
-                    };
-                    reader.onerror = reject;
-                });
-
-                // Enregistrement direct dans Firestore
-                await addDoc(collection(db, "articles_solaires"), {
-                    titre: titre,
-                    prix: parseFloat(prix),
-                    imageUrl: base64Image,
-                    dateAjout: new Date()
-                });
-
-                // Succès !
-                successMsg.style.display = 'block';
-                document.getElementById('titre').value = '';
-                document.getElementById('prix').value = '';
-                document.getElementById('image').value = '';
-                setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
-
-            } catch (error) {
-                console.error("Erreur :", error);
-                alert("Une erreur est survenue : " + error.message);
-            } finally {
-                addItemBtn.innerText = "Publier l'article";
-                addItemBtn.disabled = false;
-            }
-        });
-    </script>
-
 </body>
 </html>
