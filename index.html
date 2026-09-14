@@ -80,6 +80,9 @@
         // Écoute des éléments globaux (Menu et Footer)
         onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
             if (snapshot.exists()) {
+                if(data.heroImage) {
+    document.querySelector('.hero').style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('${data.heroImage}')`;
+}
                 const data = snapshot.val();
                 if(data.navHome) document.getElementById('dyn-nav-home').innerText = data.navHome;
                 if(data.navShop) document.getElementById('dyn-nav-shop').innerText = data.navShop;
