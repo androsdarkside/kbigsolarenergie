@@ -1,93 +1,232 @@
+/* --- BASE & TYPOGRAPHIE --- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-    background-color: #f8f9fa;
-    color: #333333;
-    line-height: 1.6;
+    background-color: #f5f7fa;
+    color: #334155;
+    line-height: 1.7;
 }
 
-/* Header moderne et fixe */
+/* --- NAVIGATION --- */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 20px 5%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 .logo img {
     height: 50px;
-    width: auto;
     object-fit: contain;
 }
 
 .menu {
     display: flex;
-    gap: 15px;
+    gap: 30px;
+    align-items: center;
 }
 
-.btn-menu {
-    color: #ff5100;
+.menu a {
+    color: #1e293b;
     text-decoration: none;
-    padding: 8px 18px;
-    border-radius: 20px;
-    border: 2px solid #ff5100;
     font-weight: 600;
-    transition: all 0.3s ease;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.menu a:hover { color: #ff5100; }
+
+.btn-menu {
+    background-color: #1e293b;
+    color: #ffffff !important;
+    padding: 12px 24px;
+    border-radius: 50px;
 }
 
 .btn-menu:hover {
     background-color: #ff5100;
-    color: #ffffff !important;
+    transform: translateY(-2px);
 }
 
-/* Sections "About" modernisées sous forme de cartes élégantes */
-main {
-    max-width: 1100px;
-    margin: 40px auto;
+/* --- HERO SECTION (Le grand en-tête façon Figma) --- */
+.hero {
+    position: relative;
+    height: 80vh;
+    min-height: 600px;
+    background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('solarpanel1.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    max-width: 900px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    color: #cbd5e1;
+    margin-bottom: 40px;
+}
+
+.btn-primary {
+    background-color: #ff5100;
+    color: white;
+    padding: 16px 36px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e64a00;
+    box-shadow: 0 10px 20px rgba(255, 81, 0, 0.3);
+}
+
+/* --- BLOC FLOTTANT (La touche moderne) --- */
+.floating-features {
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    max-width: 1000px;
+    margin: -60px auto 60px auto;
+    position: relative;
+    z-index: 10;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    padding: 40px;
+}
+
+.feature-item {
+    text-align: center;
+    flex: 1;
     padding: 0 20px;
 }
 
-.about-section {
-    background-color: #ffffff;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-    border-left: 5px solid #ff5100;
-    text-align: left;
+.feature-item h3 {
+    color: #1e293b;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
 }
 
-.about-section h2 {
-    color: #1a1a1a;
-    margin-bottom: 15px;
-    font-size: 24px;
+.feature-item p {
+    font-size: 0.95rem;
+    color: #64748b;
 }
 
-.about-section p {
-    color: #666666;
-    font-size: 16px;
-}
-
-/* Footer moderne */
-footer {
+/* --- BOUTIQUE / CARTES PRODUITS --- */
+.section-title {
     text-align: center;
-    padding: 30px;
-    background-color: #1a1a1a;
-    color: #bbbbbb;
-    margin-top: 60px;
-    font-size: 14px;
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 50px;
+}
+
+.shop-container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #f8fafc;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    color: #0f172a;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.card .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.card .price {
+    color: #1e293b;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
+
+.btn-card {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 10px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-card:hover {
+    background-color: #ff5100;
+    color: white;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #0f172a;
+    color: #94a3b8;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 80px;
 }
