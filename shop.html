@@ -77,14 +77,22 @@
             categories[cat].forEach(article => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `
-                    <img src="${article.imageUrl}" alt="${article.titre}">
-                    <h3>${article.titre}</h3>
-                    <div class="price-row">
-                        <span class="price">${article.prix} FCFA</span>
-                        <a href="#" class="btn-card">Commander</a>
-                    </div>
-                `;
+                // Remplace par ton vrai numéro WhatsApp (avec l'indicatif, sans le + ni les espaces)
+const numeroWhatsApp = "233241913309"; 
+
+// Création du message pré-rempli
+const message = encodeURIComponent(`Bonjour, je souhaite commander l'équipement : ${article.titre} au prix de ${article.prix} FCFA.`);
+const lienWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${message}`;
+
+card.innerHTML = `
+    <img src="${article.imageUrl}" alt="${article.titre}">
+    <h3>${article.titre}</h3>
+    <div class="price-row">
+        <span class="price">${article.prix} FCFA</span>
+        <!-- Le bouton pointe maintenant vers WhatsApp -->
+        <a href="${lienWhatsApp}" target="_blank" class="btn-card" style="background-color: #25D366; color: white;">Commander</a>
+    </div>
+`;
                 container.appendChild(card);
             });
         });
