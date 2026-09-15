@@ -230,3 +230,56 @@ footer {
     padding: 40px 20px;
     margin-top: 80px;
 }
+
+/* --- ADAPTATION MOBILE (RESPONSIVE DESIGN) --- */
+@media screen and (max-width: 768px) {
+    /* Ajustement de l'en-tête pour les téléphones */
+    header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .menu a {
+        margin-left: 0;
+        font-size: 14px;
+    }
+
+    /* Réduction de la taille du grand titre (Hero) sur mobile */
+    .hero h1 {
+        font-size: 2.2rem;
+        padding: 0 10px;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    /* Transformation du bloc flottant en une seule colonne empilée */
+    .floating-features {
+        flex-direction: column;
+        margin: -30px 20px 40px 20px;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    /* Adaptation de la grille de la boutique pour s'afficher en 1 ou 2 colonnes sur mobile */
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    /* Adaptation du conteneur du panneau d'administration */
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+}
