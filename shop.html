@@ -115,10 +115,20 @@
         let currentSearch = "";
         const numeroWhatsApp = "233241913309"; 
 
+        // Helper to translate legacy French categories automatically
+        function translateCategory(cat) {
+            if (cat === "Panneaux Solaires") return "Solar Panels";
+            if (cat === "Onduleurs Hybrides") return "Hybrid Inverters";
+            if (cat === "Batteries") return "Storage Batteries";
+            if (cat === "Accessoires") return "Accessories & Cables";
+            if (cat === "Autres") return "Other Equipment";
+            return cat;
+        }
+
         function updateCategoryButtons() {
             const categoriesSet = new Set();
             allArticles.forEach(item => {
-                if(item.categorie) categoriesSet.add(item.categorie);
+                if(item.categorie) categoriesSet.add(translateCategory(item.categorie));
             });
 
             filtersContainer.innerHTML = `<button class="cat-btn ${currentCategory === 'all' ? 'active' : ''}" data-category="all">All Equipment</button>`;
@@ -142,17 +152,18 @@
             container.innerHTML = "";
 
             const filtered = allArticles.filter(item => {
+                const translatedCat = translateCategory(item.categorie || "Other Equipment");
                 const matchesSearch = item.titre.toLowerCase().includes(currentSearch.toLowerCase()) || 
-                                      (item.categorie || "").toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      translatedCat.toLowerCase().includes(currentSearch.toLowerCase()) ||
                                       (item.description || "").toLowerCase().includes(currentSearch.toLowerCase());
-                const matchesCategory = currentCategory === "all" || item.categorie === currentCategory;
+                const matchesCategory = currentCategory === "all" || translatedCat === currentCategory;
                 return matchesSearch && matchesCategory;
             });
 
             if (filtered.length > 0) {
                 const categories = {};
                 filtered.forEach(article => {
-                    const cat = article.categorie || "Other Equipment";
+                    const cat = translateCategory(article.categorie || "Other Equipment");
                     if(!categories[cat]) categories[cat] = [];
                     categories[cat].push(article);
                 });
