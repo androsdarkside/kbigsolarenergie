@@ -12,7 +12,7 @@
         }
         .search-input {
             width: 100%;
-            padding: 15px 20px;
+            padding: 15px 22px;
             font-size: 1rem;
             border: 2px solid #e2e8f0;
             border-radius: 50px;
@@ -25,16 +25,15 @@
             border-color: #ff5100;
             box-shadow: 0 6px 20px rgba(255, 81, 0, 0.1);
         }
-        /* Styles pour les boutons de catégories */
         .category-filters {
             display: flex;
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         .cat-btn {
-            padding: 8px 18px;
+            padding: 8px 20px;
             border-radius: 20px;
             border: 1px solid #cbd5e1;
             background: white;
@@ -77,18 +76,13 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Search for solar panels, inverters, batteries...">
         </div>
 
-        <!-- BOUTONS DE FILTRE PAR CATÉGORIE -->
-        <div class="category-filters">
-            <button class="cat-btn active" data-category="all">All</button>
-            <button class="cat-btn" data-category="Panneaux Solaires">Solar Panels</button>
-            <button class="cat-btn" data-category="Onduleurs Hybrides">Hybrid Inverters</button>
-            <button class="cat-btn" data-category="Batteries">Storage Batteries</button>
-            <button class="cat-btn" data-category="Accessoires">Accessories</button>
-            <button class="cat-btn" data-category="Other Equipment">Other</button>
+        <!-- FILTRES DE CATÉGORIES -->
+        <div class="category-filters" id="categoryFilters">
+            <button class="cat-btn active" data-category="all">All Equipment</button>
         </div>
 
         <div id="articles-container" class="grid">
-            <!-- Injected by Javascript -->
+            <!-- Injecté par Javascript -->
         </div>
         <p id="loading" style="text-align: center; color: #64748b; font-size: 1.2rem; margin-top: 50px;">Loading catalog...</p>
     </div>
@@ -97,7 +91,7 @@
         <p id="dyn-footer">© 2026 K.BIG SOLAR ENERGY</p>
     </footer>
 
-    <!-- Firebase Script & Logic -->
+    <!-- Script Firebase & Logique Boutique -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -114,28 +108,51 @@
         const container = document.getElementById('articles-container');
         const loading = document.getElementById('loading');
         const searchInput = document.getElementById('searchInput');
+        const filtersContainer = document.getElementById('categoryFilters');
 
         let allArticles = [];
         let currentCategory = "all";
         let currentSearch = "";
         const numeroWhatsApp = "233241913309"; 
 
-        // Fonction d'affichage avec double filtre (Recherche texte + Catégorie cliquée)
+        // Fonction pour mettre à jour dynamiquement les boutons de catégories disponibles
+        function updateCategoryButtons() {
+            const categoriesSet = new Set();
+            allArticles.forEach(item => {
+                if(item.categorie) categoriesSet.add(item.categorie);
+            });
+
+            filtersContainer.innerHTML = `<button class="cat-btn ${currentCategory === 'all' ? 'active' : ''}" data-category="all">All Equipment</button>`;
+            
+            categoriesSet.forEach(cat => {
+                const isActive = currentCategory === cat ? 'active' : '';
+                filtersContainer.innerHTML += `<button class="cat-btn ${isActive}" data-category="${cat}">${cat}</button>`;
+            });
+
+            // Réattacher les écouteurs sur les nouveaux boutons générés
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentCategory = e.target.getAttribute('data-category');
+                    displayArticles();
+                });
+            });
+        }
+
+        // Affichage des articles filtrés
         function displayArticles() {
             container.innerHTML = "";
 
             const filtered = allArticles.filter(item => {
                 const matchesSearch = item.titre.toLowerCase().includes(currentSearch.toLowerCase()) || 
                                       (item.categorie || "").toLowerCase().includes(currentSearch.toLowerCase());
-                
                 const matchesCategory = currentCategory === "all" || item.categorie === currentCategory;
-
                 return matchesSearch && matchesCategory;
             });
 
             if (filtered.length > 0) {
                 const categories = {};
-
                 filtered.forEach(article => {
                     const cat = article.categorie || "Other Equipment";
                     if(!categories[cat]) categories[cat] = [];
@@ -143,15 +160,8 @@
                 });
 
                 Object.keys(categories).forEach(cat => {
-                    let catName = cat;
-                    if (cat === "Panneaux Solaires") catName = "Solar Panels";
-                    if (cat === "Onduleurs Hybrides") catName = "Hybrid Inverters";
-                    if (cat === "Batteries") catName = "Storage Batteries";
-                    if (cat === "Accessoires") catName = "Accessories & Cables";
-                    if (cat === "Autres" || cat === "Other Equipment") catName = "Other Equipment";
-
                     const titreSection = document.createElement('h2');
-                    titreSection.innerText = catName;
+                    titreSection.innerText = cat;
                     titreSection.style.cssText = "grid-column: 1 / -1; width: 100%; margin: 40px 0 20px; font-size: 1.8rem; color: #0f172a; border-bottom: 2px solid #ff5100; padding-bottom: 8px;";
                     container.appendChild(titreSection);
 
@@ -188,33 +198,19 @@
                     id: key,
                     ...data[key]
                 }));
+                updateCategoryButtons();
                 displayArticles();
             } else {
                 container.innerHTML = '<p style="text-align: center; width: 100%; grid-column: 1 / -1; color: #64748b;">No equipment available yet.</p>';
             }
         });
 
-        // Écouteur de la barre de recherche
         searchInput.addEventListener('input', (e) => {
             currentSearch = e.target.value;
             displayArticles();
         });
 
-        // Écouteurs des boutons de catégories
-        document.querySelectorAll('.cat-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Retirer la classe active de tous les boutons
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                // Activer le bouton cliqué
-                e.target.classList.add('active');
-
-                // Mettre à jour la catégorie courante et rafraîchir l'affichage
-                currentCategory = e.target.getAttribute('data-category');
-                displayArticles();
-            });
-        });
-
-        // Écoute globale (Menu, Footer, Logo)
+        // Paramètres globaux (Menu, Footer, Logo)
         onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
