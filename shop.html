@@ -115,7 +115,6 @@
         let currentSearch = "";
         const numeroWhatsApp = "233241913309"; 
 
-        // Helper to translate legacy French categories automatically
         function translateCategory(cat) {
             if (cat === "Panneaux Solaires") return "Solar Panels";
             if (cat === "Onduleurs Hybrides") return "Hybrid Inverters";
@@ -178,9 +177,9 @@
                         const card = document.createElement('div');
                         card.className = 'card';
                         
-                        const formattedPrice = Number(article.prix).toLocaleString('fr-FR');
+                        const formattedPrice = Number(article.prix).toLocaleString('en-US');
                         const itemDesc = article.description ? article.description : "Quality solar equipment for your installation.";
-                        const message = encodeURIComponent(`Hello, I would like to order: ${article.titre} at the price of ${formattedPrice} FCFA.`);
+                        const message = encodeURIComponent(`Hello, I would like to order: ${article.titre} at the price of ${formattedPrice} GHS.`);
                         const lienWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${message}`;
 
                         card.innerHTML = `
@@ -188,7 +187,7 @@
                             <h3>${article.titre}</h3>
                             <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px; line-height: 1.4;">${itemDesc}</p>
                             <div class="price-row">
-                                <span class="price">${formattedPrice} FCFA</span>
+                                <span class="price">${formattedPrice} GHS</span>
                                 <a href="${lienWhatsApp}" target="_blank" class="btn-card" style="background-color: #25D366; color: white;">Order</a>
                             </div>
                         `;
