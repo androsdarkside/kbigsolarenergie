@@ -143,7 +143,8 @@
 
             const filtered = allArticles.filter(item => {
                 const matchesSearch = item.titre.toLowerCase().includes(currentSearch.toLowerCase()) || 
-                                      (item.categorie || "").toLowerCase().includes(currentSearch.toLowerCase());
+                                      (item.categorie || "").toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      (item.description || "").toLowerCase().includes(currentSearch.toLowerCase());
                 const matchesCategory = currentCategory === "all" || item.categorie === currentCategory;
                 return matchesSearch && matchesCategory;
             });
@@ -167,12 +168,14 @@
                         card.className = 'card';
                         
                         const formattedPrice = Number(article.prix).toLocaleString('fr-FR');
+                        const itemDesc = article.description ? article.description : "Quality solar equipment for your installation.";
                         const message = encodeURIComponent(`Hello, I would like to order: ${article.titre} at the price of ${formattedPrice} FCFA.`);
                         const lienWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${message}`;
 
                         card.innerHTML = `
                             <img src="${article.imageUrl}" alt="${article.titre}">
                             <h3>${article.titre}</h3>
+                            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px; line-height: 1.4;">${itemDesc}</p>
                             <div class="price-row">
                                 <span class="price">${formattedPrice} FCFA</span>
                                 <a href="${lienWhatsApp}" target="_blank" class="btn-card" style="background-color: #25D366; color: white;">Order</a>
