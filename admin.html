@@ -34,7 +34,7 @@
 
         .admin-wrapper {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
         }
 
         /* --- SECTION CONNEXION --- */
@@ -64,16 +64,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             background: var(--card-bg);
-            padding: 25px 30px;
+            padding: 20px 30px;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             border: 1px solid var(--border);
         }
 
         .dashboard-header h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--text-main);
         }
@@ -82,21 +82,65 @@
             background-color: #f1f5f9;
             color: #475569;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            width: auto;
-            margin-top: 0;
         }
 
         .btn-logout:hover {
-            background-color: #e2e8f0;
-            color: #0f172a;
+            background-color: #fee2e2;
+            color: #ef4444;
         }
 
-        /* --- CARTES DE FORMULAIRES / SECTIONS --- */
+        /* --- BOUTONS DE NAVIGATION (ONGLETS) --- */
+        .admin-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 81, 0, 0.25);
+        }
+
+        /* --- SECTIONS DE CONTENU (MASQUÉES PAR DÉFAUT) --- */
+        .admin-section-content {
+            display: none;
+        }
+
+        .admin-section-content.active-section {
+            display: block;
+        }
+
+        /* --- CARTES DE FORMULAIRES --- */
         .admin-card {
             background: var(--card-bg);
             padding: 30px;
@@ -111,9 +155,6 @@
             font-weight: 700;
             margin-bottom: 20px;
             color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
             border-bottom: 2px solid #f1f5f9;
             padding-bottom: 12px;
         }
@@ -181,12 +222,20 @@
             transform: translateY(-1px);
         }
 
-        /* --- LISTE DES ARTICLES EXISTANTS --- */
+        /* --- BARRE DE RECHERCHE DANS LA LISTE ADMIN --- */
+        .admin-search-box {
+            margin-bottom: 15px;
+        }
+
+        /* --- LISTE DES ARTICLES --- */
         .admin-item-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
         .admin-item {
@@ -257,6 +306,9 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
+            .admin-nav-tabs {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -286,114 +338,150 @@
                 <button id="logout-btn" class="btn-logout">Log Out</button>
             </div>
 
-            <!-- CARTE 1 : PUBLIER UN ARTICLE -->
-            <div class="admin-card">
-                <h2>📦 Add New Equipment</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Item Title</label>
-                        <input type="text" id="titre" placeholder="e.g. Solar Panel 600W">
-                    </div>
-                    <div class="form-group">
-                        <label>Price (FCFA)</label>
-                        <input type="number" id="prix" placeholder="e.g. 125000">
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Category (Select existing or type a new one)</label>
-                        <!-- Le input avec datalist permet de choisir OU de créer une catégorie librement -->
-                        <input type="text" id="categorie" list="category-list" placeholder="Select or type custom category...">
-                        <datalist id="category-list">
-                            <option value="Solar Panels">
-                            <option value="Hybrid Inverters">
-                            <option value="Storage Batteries">
-                            <option value="Accessories & Cables">
-                        </datalist>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Product Image</label>
-                        <input type="file" id="image" accept="image/*">
-                    </div>
-                </div>
-                <button id="add-item-btn" class="btn-primary">Publish Equipment</button>
-                <div id="success-msg" class="success-alert">Equipment published successfully!</div>
-
-                <div id="admin-list" class="admin-item-list"></div>
+            <!-- BOUTONS DE NAVIGATION PAR ONGLET -->
+            <div class="admin-nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('shop-tab', event)">📦 Shop Manager</button>
+                <button class="tab-btn" onclick="switchTab('texts-tab', event)">✏️ Home Texts</button>
+                <button class="tab-btn" onclick="switchTab('global-tab', event)">⚙️ Global & Design</button>
             </div>
 
-            <!-- CARTE 2 : TEXTES DE LA PAGE D'ACCUEIL -->
-            <div class="admin-card">
-                <h2>✏️ Edit Home Page Content</h2>
-                <div class="form-group">
-                    <label>Title 1 (Hero)</label>
-                    <input type="text" id="titre1">
+            <!-- ONGLET 1 : GESTION DE LA BOUTIQUE & RECHERCHE -->
+            <div id="shop-tab" class="admin-section-content active-section">
+                <div class="admin-card">
+                    <h2>Add New Equipment</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Item Title</label>
+                            <input type="text" id="titre" placeholder="e.g. Solar Panel 600W">
+                        </div>
+                        <div class="form-group">
+                            <label>Price (FCFA)</label>
+                            <input type="number" id="prix" placeholder="e.g. 125000">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Category (Select or type custom)</label>
+                            <input type="text" id="categorie" list="category-list" placeholder="Select or type category...">
+                            <datalist id="category-list">
+                                <option value="Solar Panels">
+                                <option value="Hybrid Inverters">
+                                <option value="Storage Batteries">
+                                <option value="Accessories & Cables">
+                            </datalist>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Product Image</label>
+                            <input type="file" id="image" accept="image/*">
+                        </div>
+                    </div>
+                    <button id="add-item-btn" class="btn-primary">Publish Equipment</button>
+                    <div id="success-msg" class="success-alert">Equipment published successfully!</div>
                 </div>
-                <div class="form-group">
-                    <label>Text 1 (Hero)</label>
-                    <textarea id="texte1" rows="2"></textarea>
+
+                <div class="admin-card">
+                    <h2>Manage Existing Items</h2>
+                    <!-- Barre de recherche pour l'admin -->
+                    <div class="form-group admin-search-box">
+                        <input type="text" id="adminSearchInput" placeholder="Search added items by title or category...">
+                    </div>
+                    <div id="admin-list" class="admin-item-list"></div>
                 </div>
-                <div class="form-group">
-                    <label>Title 2</label>
-                    <input type="text" id="titre2">
-                </div>
-                <div class="form-group">
-                    <label>Text 2</label>
-                    <textarea id="texte2" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Title 3</label>
-                    <input type="text" id="titre3">
-                </div>
-                <div class="form-group">
-                    <label>Text 3</label>
-                    <textarea id="texte3" rows="2"></textarea>
-                </div>
-                <button id="save-texts-btn" class="btn-primary" style="background-color: #10b981;">Save Home Texts</button>
-                <div id="text-success-msg" class="success-alert">Home texts updated successfully!</div>
             </div>
 
-            <!-- CARTE 3 : NAVIGATION & GLOBAL -->
-            <div class="admin-card">
-                <h2>⚙️ Global Settings (Menu, Footer & Logo)</h2>
-                <div class="form-grid">
+            <!-- ONGLET 2 : TEXTES DE L'ACCUEIL -->
+            <div id="texts-tab" class="admin-section-content">
+                <div class="admin-card">
+                    <h2>Edit Home Page Content</h2>
                     <div class="form-group">
-                        <label>Menu 1 (Home)</label>
-                        <input type="text" id="nav-home">
+                        <label>Title 1 (Hero)</label>
+                        <input type="text" id="titre1">
                     </div>
                     <div class="form-group">
-                        <label>Menu 2 (Shop)</label>
-                        <input type="text" id="nav-shop">
+                        <label>Text 1 (Hero)</label>
+                        <textarea id="texte1" rows="2"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Menu 3 (About)</label>
-                        <input type="text" id="nav-about">
+                        <label>Title 2</label>
+                        <input type="text" id="titre2">
                     </div>
                     <div class="form-group">
-                        <label>Footer Text</label>
-                        <input type="text" id="footer-text">
+                        <label>Text 2</label>
+                        <textarea id="texte2" rows="2"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label>Title 3</label>
+                        <input type="text" id="titre3">
+                    </div>
+                    <div class="form-group">
+                        <label>Text 3</label>
+                        <textarea id="texte3" rows="2"></textarea>
+                    </div>
+                    <button id="save-texts-btn" class="btn-primary" style="background-color: #10b981;">Save Home Texts</button>
+                    <div id="text-success-msg" class="success-alert">Home texts updated successfully!</div>
                 </div>
-                <button id="save-global-btn" class="btn-primary" style="background-color: #10b981;">Save Global Settings</button>
-                <div id="global-success-msg" class="success-alert">Global settings updated successfully!</div>
+            </div>
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border);">
+            <!-- ONGLET 3 : PARAMÈTRES GLOBAUX & DESIGN -->
+            <div id="global-tab" class="admin-section-content">
+                <div class="admin-card">
+                    <h2>Global Settings (Menu, Footer & Visuals)</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Menu 1 (Home)</label>
+                            <input type="text" id="nav-home">
+                        </div>
+                        <div class="form-group">
+                            <label>Menu 2 (Shop)</label>
+                            <input type="text" id="nav-shop">
+                        </div>
+                        <div class="form-group">
+                            <label>Menu 3 (About)</label>
+                            <input type="text" id="nav-about">
+                        </div>
+                        <div class="form-group">
+                            <label>Footer Text</label>
+                            <input type="text" id="footer-text">
+                        </div>
+                    </div>
+                    <button id="save-global-btn" class="btn-primary" style="background-color: #10b981;">Save Global Settings</button>
+                    <div id="global-success-msg" class="success-alert">Global settings updated successfully!</div>
 
-                <div class="form-group">
-                    <label>Update Website Logo</label>
-                    <input type="file" id="logo-image-input" accept="image/*">
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border);">
+
+                    <div class="form-group">
+                        <label>Update Website Logo</label>
+                        <input type="file" id="logo-image-input" accept="image/*">
+                    </div>
+                    <button id="save-logo-btn" class="btn-primary" style="background-color: #3b82f6;">Upload New Logo</button>
+
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border);">
+
+                    <div class="form-group">
+                        <label>Update Home Background Image (Hero)</label>
+                        <input type="file" id="hero-image-input" accept="image/*">
+                    </div>
+                    <button id="save-hero-img-btn" class="btn-primary" style="background-color: #3b82f6;">Upload New Hero Background</button>
                 </div>
-                <button id="save-logo-btn" class="btn-primary" style="background-color: #3b82f6;">Upload New Logo</button>
-
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--border);">
-
-                <div class="form-group">
-                    <label>Update Home Background Image (Hero)</label>
-                    <input type="file" id="hero-image-input" accept="image/*">
-                </div>
-                <button id="save-hero-img-btn" class="btn-primary" style="background-color: #3b82f6;">Upload New Hero Background</button>
             </div>
 
         </div>
     </div>
+
+    <!-- Script de gestion des onglets (Global function) -->
+    <script>
+        function switchTab(tabId, event) {
+            // Cacher tous les contenus d'onglets
+            document.querySelectorAll('.admin-section-content').forEach(content => {
+                content.classList.remove('active-section');
+            });
+            // Retirer la classe active de tous les boutons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Afficher l'onglet ciblé et activer son bouton
+            document.getElementById(tabId).classList.add('active-section');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
 
     <!-- Script Firebase & Admin Logic -->
     <script type="module">
@@ -419,6 +507,9 @@
         const loginSection = document.getElementById('login-section');
         const dashboardSection = document.getElementById('dashboard-section');
         const adminList = document.getElementById('admin-list');
+        const adminSearchInput = document.getElementById('adminSearchInput');
+
+        let allAdminArticles = [];
 
         // Authentification
         document.getElementById('login-btn').addEventListener('click', () => {
@@ -437,13 +528,17 @@
             });
         });
 
-        // 1. Gestion des articles & suppression visuelle propre
-        onValue(dbRef(db, 'articles_solaires'), (snapshot) => {
+        // Fonction d'affichage de la liste admin avec filtre de recherche
+        function renderAdminList(filterText = "") {
             adminList.innerHTML = "";
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                Object.keys(data).forEach((key) => {
-                    const article = data[key];
+            const filtered = allAdminArticles.filter(item => {
+                const matchTitle = item.titre.toLowerCase().includes(filterText.toLowerCase());
+                const matchCategory = (item.categorie || "").toLowerCase().includes(filterText.toLowerCase());
+                return matchTitle || matchCategory;
+            });
+
+            if (filtered.length > 0) {
+                filtered.forEach((article) => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'admin-item';
                     itemDiv.innerHTML = `
@@ -452,11 +547,12 @@
                             <h4>${article.titre}</h4>
                             <span>${article.categorie || "General"}</span> — <strong>${Number(article.prix).toLocaleString('fr-FR')} FCFA</strong>
                         </div>
-                        <button class="btn-delete" data-id="${key}">Delete</button>
+                        <button class="btn-delete" data-id="${article.id}">Delete</button>
                     `;
                     adminList.appendChild(itemDiv);
                 });
 
+                // Activer les boutons de suppression
                 document.querySelectorAll('.btn-delete').forEach(button => {
                     button.addEventListener('click', async (e) => {
                         if (confirm("Are you sure you want to delete this item?")) {
@@ -465,8 +561,28 @@
                     });
                 });
             } else {
+                adminList.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 10px;">No matching items found.</p>';
+            }
+        }
+
+        // Récupération des articles depuis Firebase
+        onValue(dbRef(db, 'articles_solaires'), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                allAdminArticles = Object.keys(data).map(key => ({
+                    id: key,
+                    ...data[key]
+                }));
+                renderAdminList(adminSearchInput.value);
+            } else {
+                allAdminArticles = [];
                 adminList.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 10px;">No items published yet.</p>';
             }
+        });
+
+        // Recherche en direct dans l'admin
+        adminSearchInput.addEventListener('input', (e) => {
+            renderAdminList(e.target.value);
         });
 
         // Publication d'un article
@@ -511,7 +627,7 @@
             btn.disabled = false;
         });
 
-        // 2. Gestion des textes de la page d'accueil
+        // Gestion des textes de la page d'accueil
         const textsRef = dbRef(db, 'contenu_pages/accueil');
         onValue(textsRef, (snapshot) => {
             if (snapshot.exists()) {
@@ -539,7 +655,7 @@
             setTimeout(() => msg.style.display = 'none', 3000);
         });
 
-        // 3. Navigation & Footer Globaux
+        // Navigation & Footer Globaux
         const globalRef = dbRef(db, 'contenu_pages/global');
         onValue(globalRef, (snapshot) => {
             if (snapshot.exists()) {
@@ -563,7 +679,7 @@
             setTimeout(() => msg.style.display = 'none', 3000);
         });
 
-        // 4. Upload du Logo
+        // Upload du Logo
         document.getElementById('save-logo-btn').addEventListener('click', async () => {
             const file = document.getElementById('logo-image-input').files[0];
             if (!file) return alert("Please select a logo image first!");
@@ -581,7 +697,7 @@
             btn.innerText = "Upload New Logo";
         });
 
-        // 5. Upload de l'image de fond (Hero)
+        // Upload de l'image de fond (Hero)
         document.getElementById('save-hero-img-btn').addEventListener('click', async () => {
             const file = document.getElementById('hero-image-input').files[0];
             if (!file) return alert("Please select a background image first!");
