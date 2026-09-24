@@ -71,18 +71,18 @@
     <div class="shop-container">
         <h1 class="section-title">Our Solar Equipment</h1>
         
-        <!-- BARRE DE RECHERCHE -->
+        <!-- Search Bar -->
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Search for solar panels, inverters, batteries...">
         </div>
 
-        <!-- FILTRES DE CATÉGORIES -->
+        <!-- Category Filters -->
         <div class="category-filters" id="categoryFilters">
             <button class="cat-btn active" data-category="all">All Equipment</button>
         </div>
 
         <div id="articles-container" class="grid">
-            <!-- Injecté par Javascript -->
+            <!-- Injected by Javascript -->
         </div>
         <p id="loading" style="text-align: center; color: #64748b; font-size: 1.2rem; margin-top: 50px;">Loading catalog...</p>
     </div>
@@ -91,7 +91,7 @@
         <p id="dyn-footer">© 2026 K.BIG SOLAR ENERGY</p>
     </footer>
 
-    <!-- Script Firebase & Logique Boutique -->
+    <!-- Firebase Script & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -115,7 +115,6 @@
         let currentSearch = "";
         const numeroWhatsApp = "233241913309"; 
 
-        // Fonction pour mettre à jour dynamiquement les boutons de catégories disponibles
         function updateCategoryButtons() {
             const categoriesSet = new Set();
             allArticles.forEach(item => {
@@ -129,7 +128,6 @@
                 filtersContainer.innerHTML += `<button class="cat-btn ${isActive}" data-category="${cat}">${cat}</button>`;
             });
 
-            // Réattacher les écouteurs sur les nouveaux boutons générés
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -140,7 +138,6 @@
             });
         }
 
-        // Affichage des articles filtrés
         function displayArticles() {
             container.innerHTML = "";
 
@@ -189,7 +186,6 @@
             }
         }
 
-        // Récupération Firebase
         onValue(ref(db, 'articles_solaires'), (snapshot) => {
             loading.style.display = 'none';
             if (snapshot.exists()) {
@@ -210,7 +206,6 @@
             displayArticles();
         });
 
-        // Paramètres globaux (Menu, Footer, Logo)
         onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
