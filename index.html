@@ -19,14 +19,14 @@
         </nav>
     </header>
 
-    <!-- En-tête Principal (Hero) -->
+    <!-- Hero Section -->
     <section class="hero">
         <h1 id="dyn-titre1">Power Your Life With Clean Energy</h1>
         <p id="dyn-texte1">Discover quality solar products and solutions that help you save money and enjoy reliable power.</p>
         <a href="shop.html" class="btn-primary">Discover our products</a>
     </section>
 
-    <!-- Bloc Flottant (Figma Style) -->
+    <!-- Floating Features Block -->
     <div class="floating-features">
         <div class="feature-item">
             <h3>100% Green Energy</h3>
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <!-- Section À propos / Mission -->
+    <!-- About / Mission Section -->
     <main id="about" style="text-align: center; max-width: 800px; margin: 80px auto; padding: 0 20px;">
         <h2 id="dyn-titre3" style="font-size: 2.2rem; font-weight: 800; margin-bottom: 20px; color: #0f172a; letter-spacing: -0.02em;">Welcome to K.BIG</h2>
         <p id="dyn-texte3" style="font-size: 1.1rem; color: #64748b; line-height: 1.8;">K.BIG Solar Energy is dedicated to providing quality solar energy products and solutions that help individuals, families, and businesses enjoy reliable power.</p>
@@ -52,7 +52,7 @@
         <p id="dyn-footer">© 2026 K.BIG SOLAR ENERGY</p>
     </footer>
 
-    <!-- Script Firebase pour les éléments dynamiques -->
+    <!-- Firebase Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -66,7 +66,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Textes de l'accueil
         onValue(ref(db, 'contenu_pages/accueil'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
@@ -79,7 +78,6 @@
             }
         });
 
-        // Paramètres globaux (Menu, Footer, Logo, Hero Image)
         onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
