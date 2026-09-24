@@ -353,7 +353,6 @@
             <div id="shop-tab" class="admin-section-content active-section">
                 <div class="admin-card">
                     <h2 id="form-card-title">Add New Equipment</h2>
-                    <!-- Champ caché pour stocker l'ID de l'article en cours d'édition -->
                     <input type="hidden" id="edit-item-id" value="">
 
                     <div class="form-grid">
@@ -493,7 +492,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getDatabase, ref as dbRef, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+        import { getDatabase, ref as dbRef, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
@@ -559,7 +558,6 @@
                     adminList.appendChild(itemDiv);
                 });
 
-                // Action de suppression
                 document.querySelectorAll('.btn-delete').forEach(button => {
                     button.addEventListener('click', async (e) => {
                         if (confirm("Are you sure you want to delete this item?")) {
@@ -568,7 +566,6 @@
                     });
                 });
 
-                // Action de modification (Charger les données dans le formulaire)
                 document.querySelectorAll('.btn-edit').forEach(button => {
                     button.addEventListener('click', (e) => {
                         const id = e.target.getAttribute('data-id');
@@ -580,12 +577,10 @@
                             document.getElementById('categorie').value = article.categorie || "";
                             document.getElementById('description').value = article.description || "";
                             
-                            // Modifier l'UI du formulaire pour indiquer qu'on édite
                             document.getElementById('form-card-title').innerText = "Edit Equipment";
                             document.getElementById('add-item-btn').innerText = "Save Changes";
                             document.getElementById('cancel-edit-btn').style.display = 'block';
                             
-                            // Remonter en haut de la page pour voir le formulaire
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                     });
@@ -596,7 +591,6 @@
             }
         }
 
-        // Bouton d'annulation de l'édition
         document.getElementById('cancel-edit-btn').addEventListener('click', () => {
             resetForm();
         });
@@ -631,7 +625,6 @@
             renderAdminList(e.target.value);
         });
 
-        // Publication ou Mise à jour d'un article
         document.getElementById('add-item-btn').addEventListener('click', async () => {
             const editId = document.getElementById('edit-item-id').value;
             const titre = document.getElementById('titre').value;
@@ -650,7 +643,6 @@
             try {
                 let imageUrl = "";
                 
-                // Si une nouvelle image a été sélectionnée, on l'upload sur ImgBB
                 if (file) {
                     const formData = new FormData(); 
                     formData.append("image", file);
@@ -658,13 +650,11 @@
                     const imgData = await response.json();
                     imageUrl = imgData.data.url;
                 } else {
-                    // Sinon, on récupère l'ancienne image si on est en train d'éditer
                     const existingItem = allAdminArticles.find(item => item.id === editId);
                     imageUrl = existingItem ? existingItem.imageUrl : "";
                 }
 
                 if (editId) {
-                    // MISE À JOUR DE L'ARTICLE EXISTANT
                     await update(dbRef(db, 'articles_solaires/' + editId), {
                         titre,
                         prix: parseFloat(prix),
@@ -673,7 +663,6 @@
                         imageUrl
                     });
                 } else {
-                    // CRÉATION D'UN NOUVEL ARTICLE
                     await push(dbRef(db, 'articles_solaires'), { 
                         titre, 
                         prix: parseFloat(prix), 
