@@ -352,6 +352,10 @@
                             </datalist>
                         </div>
                         <div class="form-group full-width">
+                            <label>Item Description</label>
+                            <textarea id="description" rows="3" placeholder="e.g. High efficiency monocrystalline solar panel, 25-year warranty..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
                             <label>Product Image</label>
                             <input type="file" id="image" accept="image/*">
                         </div>
@@ -561,6 +565,7 @@
             const titre = document.getElementById('titre').value;
             const prix = document.getElementById('prix').value;
             const categorie = document.getElementById('categorie').value || "Other Equipment";
+            const description = document.getElementById('description').value;
             const file = document.getElementById('image').files[0];
 
             if (!titre || !prix || !file) return alert("Please fill in all required fields!");
@@ -579,6 +584,7 @@
                     titre, 
                     prix: parseFloat(prix), 
                     categorie, 
+                    description,
                     imageUrl: data.data.url, 
                     dateAjout: new Date().toISOString()
                 });
@@ -586,6 +592,7 @@
                 document.getElementById('titre').value = ''; 
                 document.getElementById('prix').value = '';
                 document.getElementById('categorie').value = '';
+                document.getElementById('description').value = '';
                 document.getElementById('image').value = '';
                 
                 const msg = document.getElementById('success-msg');
