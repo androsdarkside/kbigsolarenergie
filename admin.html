@@ -361,8 +361,8 @@
                             <input type="text" id="titre" placeholder="e.g. Solar Panel 600W">
                         </div>
                         <div class="form-group">
-                            <label>Price (FCFA)</label>
-                            <input type="number" id="prix" placeholder="e.g. 125000">
+                            <label>Price (GHS)</label>
+                            <input type="number" id="prix" placeholder="e.g. 1500">
                         </div>
                         <div class="form-group full-width">
                             <label>Category (Select or type custom)</label>
@@ -548,7 +548,7 @@
                         <img src="${article.imageUrl}" alt="">
                         <div class="item-info">
                             <h4>${article.titre}</h4>
-                            <span>${article.categorie || "General"}</span> — <strong>${Number(article.prix).toLocaleString('fr-FR')} FCFA</strong>
+                            <span>${article.categorie || "General"}</span> — <strong>${Number(article.prix).toLocaleString('en-US')} GHS</strong>
                         </div>
                         <div class="action-buttons">
                             <button class="btn-edit" data-id="${article.id}">Edit</button>
