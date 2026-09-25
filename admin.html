@@ -532,11 +532,21 @@
             });
         });
 
+        function translateCategory(cat) {
+            if (cat === "Panneaux Solaires") return "Solar Panels";
+            if (cat === "Onduleurs Hybrides") return "Hybrid Inverters";
+            if (cat === "Batteries") return "Storage Batteries";
+            if (cat === "Accessoires") return "Accessories & Cables";
+            if (cat === "Autres") return "Other Equipment";
+            return cat;
+        }
+
         function renderAdminList(filterText = "") {
             adminList.innerHTML = "";
             const filtered = allAdminArticles.filter(item => {
                 const matchTitle = item.titre.toLowerCase().includes(filterText.toLowerCase());
-                const matchCategory = (item.categorie || "").toLowerCase().includes(filterText.toLowerCase());
+                const translatedCat = translateCategory(item.categorie || "");
+                const matchCategory = translatedCat.toLowerCase().includes(filterText.toLowerCase());
                 return matchTitle || matchCategory;
             });
 
@@ -544,11 +554,14 @@
                 filtered.forEach((article) => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'admin-item';
+                    
+                    const displayCat = translateCategory(article.categorie || "General");
+
                     itemDiv.innerHTML = `
                         <img src="${article.imageUrl}" alt="">
                         <div class="item-info">
                             <h4>${article.titre}</h4>
-                            <span>${article.categorie || "General"}</span> — <strong>${Number(article.prix).toLocaleString('en-US')} GHS</strong>
+                            <span>${displayCat}</span> — <strong>${Number(article.prix).toLocaleString('en-US')} GHS</strong>
                         </div>
                         <div class="action-buttons">
                             <button class="btn-edit" data-id="${article.id}">Edit</button>
@@ -574,7 +587,7 @@
                             document.getElementById('edit-item-id').value = article.id;
                             document.getElementById('titre').value = article.titre;
                             document.getElementById('prix').value = article.prix;
-                            document.getElementById('categorie').value = article.categorie || "";
+                            document.getElementById('categorie').value = translateCategory(article.categorie || "");
                             document.getElementById('description').value = article.description || "";
                             
                             document.getElementById('form-card-title').innerText = "Edit Equipment";
