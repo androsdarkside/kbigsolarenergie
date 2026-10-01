@@ -3,94 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K.BIG Solar Energy - Clean & Reliable Power</title>
-    <link rel="stylesheet" href="style.css">
+    <title>K.BIG Solar Energy - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff5100;
+            --primary-hover: #e64a00;
+            --bg-light: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo img {
+            height: 45px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        header {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            background-color: #1e293b; /* Fallback */
+            background-size: cover;
+            background-position: center;
+            padding: 0 20px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            opacity: 0; /* Handled by animation */
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .btn-main {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 10px 25px rgba(255, 81, 0, 0.3);
+        }
+
+        .btn-main:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 81, 0, 0.4);
+        }
+
+        /* Featured Products Section */
+        .section-featured {
+            padding: 80px 5%;
+            background-color: var(--bg-light);
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+        
+        .section-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .grid-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: left;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background-color: var(--white);
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--text-main);
+            border: 2px solid var(--border);
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Features Section (Why Choose Us) */
+        .section-info {
+            padding: 80px 5%;
+            background-color: var(--white);
+            text-align: center;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            padding: 30px;
+            border-radius: 20px;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .info-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.95rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Add a hamburger menu for mobile later if needed */
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="logo"> 
-            <img src="logo.jpg" alt="K.BIG Solar Logo" id="dyn-logo"> 
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img id="nav-logo" src="https://via.placeholder.com/150x50?text=Logo" alt="K.BIG Solar Energy">
         </div>
-        <nav class="menu">
-            <a href="index.html" id="dyn-nav-home">Home</a>
-            <a href="shop.html" id="dyn-nav-shop">Shop</a>
-            <a href="index.html#about" id="dyn-nav-about">About</a>
-            <a href="shop.html" class="btn-menu">View Offers</a> 
-        </nav>
-    </header>
+        <div class="nav-links">
+            <a href="index.html" id="menu-home">Home</a>
+            <a href="shop.html" id="menu-shop">Shop</a>
+            <a href="#about" id="menu-about">About Us</a>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <h1 id="dyn-titre1">Power Your Life With Clean Energy</h1>
-        <p id="dyn-texte1">Discover quality solar products and solutions that help you save money and enjoy reliable power.</p>
-        <a href="shop.html" class="btn-primary">Discover our products</a>
+    <header id="main-header">
+        <div class="hero-content animate-up" style="animation-delay: 0.1s;">
+            <h1 id="hero-title">Empowering Your Future with Solar Energy</h1>
+            <p id="hero-desc">Reliable, efficient, and sustainable power solutions for homes and businesses. Explore top-tier solar panels, hybrid inverters, and accessories.</p>
+            <a href="shop.html" class="btn-main">Explore Equipment</a>
+        </div>
+    </header>
+
+    <!-- Featured Products Section -->
+    <section class="section-featured">
+        <h2 class="section-title">Featured Equipment</h2>
+        <p class="section-subtitle">Discover our most popular solar installations and accessories</p>
+        
+        <div class="grid-products" id="featured-products-container">
+            <!-- Products will be injected here via Firebase -->
+            <p style="grid-column: 1/-1; color: var(--text-muted);">Loading premium equipment...</p>
+        </div>
+
+        <a href="shop.html" class="btn-secondary">View Full Catalog</a>
     </section>
 
-    <!-- Floating Features Block -->
-    <div class="floating-features">
-        <div class="feature-item">
-            <h3>100% Green Energy</h3>
-            <p>Reduce your carbon footprint and your reliance on the national power grid.</p>
+    <!-- Info/Values Section -->
+    <section id="about" class="section-info">
+        <h2 class="section-title" id="info-title">Why Choose K.BIG Solar?</h2>
+        <p class="section-subtitle">Delivering excellence in renewable energy</p>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3 id="feature-1-title">Premium Quality</h3>
+                <p id="feature-1-desc">We source only the highest grade monocrystalline panels and durable hybrid inverters built to withstand demanding conditions.</p>
+            </div>
+            <div class="info-card">
+                <h3 id="feature-2-title">Expert Engineering</h3>
+                <p id="feature-2-desc">Every setup is backed by rigorous technical design to ensure optimal power balance and seamless electrical distribution.</p>
+            </div>
         </div>
-        <div class="feature-item">
-            <h3 id="dyn-titre2">Why Choose Us?</h3>
-            <p id="dyn-texte2">We offer quality products, affordable solutions, and professional service.</p>
-        </div>
-        <div class="feature-item">
-            <h3>Guaranteed Support</h3>
-            <p>A dedicated team of experts at your service for tailored and custom solutions.</p>
-        </div>
-    </div>
+    </section>
 
-    <!-- About / Mission Section -->
-    <main id="about" style="text-align: center; max-width: 800px; margin: 80px auto; padding: 0 20px;">
-        <h2 id="dyn-titre3" style="font-size: 2.2rem; font-weight: 800; margin-bottom: 20px; color: #0f172a; letter-spacing: -0.02em;">Welcome to K.BIG</h2>
-        <p id="dyn-texte3" style="font-size: 1.1rem; color: #64748b; line-height: 1.8;">K.BIG Solar Energy is dedicated to providing quality solar energy products and solutions that help individuals, families, and businesses enjoy reliable power.</p>
-    </main>
-
+    <!-- Footer -->
     <footer>
-        <p id="dyn-footer">© 2026 K.BIG SOLAR ENERGY</p>
+        <p id="footer-text">© 2026 K.BIG Solar Energy. All rights reserved.</p>
     </footer>
 
     <!-- Firebase Script -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19To transform a standard homepage into an attractive, interactive product showcase, you can combine CSS Grid for layout structure, CSS transitions for hover effects, and a lightweight JavaScript Intersection Observer to animate products as the user scrolls.
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA8CtduFC3q0j8SezpmTxCUSZbu-NBJeyM",
-            authDomain: "k-big-solar-energie.firebaseapp.com",
-            databaseURL: "https://k-big-solar-energie-default-rtdb.firebaseio.com",
-            projectId: "k-big-solar-energie"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+Here is a complete, responsive template tailored for displaying product lines like the COWIE bioclimatic cooling systems. 
 
-        onValue(ref(db, 'contenu_pages/accueil'), (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                if(data.titre1) document.getElementById('dyn-titre1').innerText = data.titre1;
-                if(data.texte1) document.getElementById('dyn-texte1').innerText = data.texte1;
-                if(data.titre2) document.getElementById('dyn-titre2').innerText = data.titre2;
-                if(data.texte2) document.getElementById('dyn-texte2').innerText = data.texte2;
-                if(data.titre3) document.getElementById('dyn-titre3').innerText = data.titre3;
-                if(data.texte3) document.getElementById('dyn-texte3').innerText = data.texte3;
-            }
-        });
+### 1. The Structure (index.html)
+This layout includes a sticky navigation bar, an attention-grabbing hero section, and a dynamic product grid. 
 
-        onValue(ref(db, 'contenu_pages/global'), (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                if(data.navHome) document.getElementById('dyn-nav-home').innerText = data.navHome;
-                if(data.navShop) document.getElementById('dyn-nav-shop').innerText = data.navShop;
-                if(data.navAbout) document.getElementById('dyn-nav-about').innerText = data.navAbout;
-                if(data.footerText) document.getElementById('dyn-footer').innerText = data.footerText;
-                if(data.logoUrl) document.getElementById('dyn-logo').src = data.logoUrl;
-                if(data.heroImage) {
-                    document.querySelector('.hero').style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('${data.heroImage}')`;
-                }
-            }
-        });
-    </script>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COWIE Eco-Cooling</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">COWIE</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>Next-Generation Bioclimatic Cooling</h1>
+            <p>Sustainable evaporative and geothermal cooling systems for your space.</p>
+            <a href="#products" class="btn">Explore Products</a>
+        </div>
+    </header>
+
+    <section id="products" class="product-showcase">
+        <h2>Featured Innovations</h2>
+        <div class="product-grid">
+            
+            <!-- Product 1 -->
+            <div class="product-card hidden">
+                <div class="product-image urban-bg">
+                    <!-- Replace with actual image tag: <img src="urban.jpg" alt="COWIE Urban"> -->
+                </div>
+                <div class="product-info">
+                    <h3>COWIE Urban</h3>
+                    <p>Compact, eco-friendly cooling designed for modern indoor environments.</p>
+                    <button class="btn-outline">View Details</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card hidden">
+                <div class="product-image garden-bg">
+                    <!-- Replace with actual image tag: <img src="garden.jpg" alt="COWIE Garden"> -->
+                </div>
+                <div class="product-info">
+                    <h3>COWIE Garden</h3>
+                    <p>Advanced geothermal integration for robust outdoor and greenhouse climate control.</p>
+                    <button class="btn-outline">View Details</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
