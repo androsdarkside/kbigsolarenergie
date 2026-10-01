@@ -66,7 +66,6 @@
             color: var(--primary);
         }
 
-        /* Cart Button in Nav */
         .cart-btn {
             background: #fff3ec;
             border: 1px solid var(--primary);
@@ -79,7 +78,6 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
-            position: relative;
         }
 
         .cart-btn:hover {
@@ -161,7 +159,7 @@
             transform: translateY(-2px);
         }
 
-        /* Featured Products Section */
+        /* Featured Products */
         .section-featured {
             padding: 80px 5%;
             text-align: center;
@@ -249,6 +247,55 @@
 
         .btn-add-cart:hover {
             background-color: var(--primary-hover);
+        }
+
+        /* About Section */
+        .section-about {
+            padding: 80px 5%;
+            background-color: var(--white);
+            text-align: center;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+        }
+
+        .about-card {
+            background: var(--bg-light);
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-icon {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .about-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .about-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         /* Cart Drawer */
@@ -402,11 +449,6 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .btn-whatsapp-checkout:hover {
-            background-color: #1eb857;
         }
 
         footer {
@@ -428,6 +470,7 @@
         <div class="nav-links">
             <a href="index.html" id="menu-home">Home</a>
             <a href="shop.html" id="menu-shop">Shop</a>
+            <a href="#about" id="menu-about">About Us</a>
             <button class="cart-btn" id="open-cart-btn">
                 🛒 Cart <span class="cart-badge" id="cart-count">0</span>
             </button>
@@ -453,6 +496,30 @@
         </div>
     </section>
 
+    <!-- About Us Section -->
+    <section id="about" class="section-about">
+        <h2 class="section-title" id="about-title-main">Why Choose K.BIG Solar?</h2>
+        <p class="section-subtitle" id="about-desc-main">Delivering high-efficiency renewable energy tailored for home and business independence</p>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <span class="about-icon">⚡</span>
+                <h3 id="about-card-1-title">High-Efficiency Equipment</h3>
+                <p id="about-card-1-desc">We stock tier-1 monocrystalline panels, long-cycle lithium batteries, and smart hybrid inverters designed for maximum output.</p>
+            </div>
+            <div class="about-card">
+                <span class="about-icon">🛠️</span>
+                <h3 id="about-card-2-title">Engineering & Sizing</h3>
+                <p id="about-card-2-desc">Every installation is calculated for optimal power balance, safety standards, and reliable operation year-round.</p>
+            </div>
+            <div class="about-card">
+                <span class="about-icon">🤝</span>
+                <h3 id="about-card-3-title">Complete Support</h3>
+                <p id="about-card-3-desc">From system selection to fast delivery and direct WhatsApp support, we guide you every step of the way.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Slide-Out Shopping Cart Drawer -->
     <div class="cart-overlay" id="cart-overlay">
         <div class="cart-drawer">
@@ -461,9 +528,7 @@
                 <button class="cart-close-btn" id="close-cart-btn">✕</button>
             </div>
             
-            <div class="cart-items-body" id="cart-items-list">
-                <!-- Cart items dynamically rendered here -->
-            </div>
+            <div class="cart-items-body" id="cart-items-list"></div>
 
             <div class="cart-footer">
                 <div class="cart-subtotal">
@@ -481,7 +546,7 @@
         <p id="footer-text">© 2026 K.BIG Solar Energy. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase & Cart App Script -->
+    <!-- Firebase & Cart Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -499,7 +564,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- CART STATE MANAGEMENT ---
+        // Cart State
         let cart = JSON.parse(localStorage.getItem('kbig_solar_cart')) || [];
 
         function saveCart() {
@@ -520,11 +585,9 @@
             const cartItemsList = document.getElementById('cart-items-list');
             const cartTotalPrice = document.getElementById('cart-total-price');
 
-            // Update Total Item Count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCountBadge.innerText = totalItems;
 
-            // Render Cart Items
             if (cart.length === 0) {
                 cartItemsList.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 40px;">Your cart is currently empty.</p>`;
                 cartTotalPrice.innerText = "0 GHS";
@@ -558,15 +621,11 @@
 
             cartTotalPrice.innerText = `${grandTotal.toLocaleString('en-US')} GHS`;
 
-            // Attach Event Listeners inside Drawer
             document.querySelectorAll('.btn-minus').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const idx = e.target.getAttribute('data-index');
-                    if (cart[idx].quantity > 1) {
-                        cart[idx].quantity -= 1;
-                    } else {
-                        cart.splice(idx, 1);
-                    }
+                    if (cart[idx].quantity > 1) cart[idx].quantity -= 1;
+                    else cart.splice(idx, 1);
                     saveCart();
                 });
             });
@@ -599,39 +658,27 @@
             openCart();
         };
 
-        // --- DRAWER TOGGLE ---
         const cartOverlay = document.getElementById('cart-overlay');
         function openCart() { cartOverlay.classList.add('active'); }
         function closeCart() { cartOverlay.classList.remove('active'); }
 
         document.getElementById('open-cart-btn').addEventListener('click', openCart);
         document.getElementById('close-cart-btn').addEventListener('click', closeCart);
-        cartOverlay.addEventListener('click', (e) => {
-            if (e.target === cartOverlay) closeCart();
-        });
+        cartOverlay.addEventListener('click', (e) => { if (e.target === cartOverlay) closeCart(); });
 
-        // --- WHATSAPP CHECKOUT ---
         document.getElementById('whatsapp-checkout-btn').addEventListener('click', () => {
             if (cart.length === 0) return alert("Your cart is empty!");
-            
-            let message = "Hello K.BIG Solar Energy! I would like to place an order for:\n\n";
+            let message = "Hello K.BIG Solar Energy! I would like to order:\n\n";
             let total = 0;
-            
             cart.forEach(item => {
                 const sub = item.prix * item.quantity;
                 total += sub;
                 message += `• *${item.titre}* x${item.quantity} - ${sub.toLocaleString('en-US')} GHS\n`;
             });
-
-            message += `\n*Total Amount:* ${total.toLocaleString('en-US')} GHS`;
-
-            // Replace with your business phone number (include country code, e.g. 233 for Ghana)
-            const phone = "233000000000"; 
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            message += `\n*Total:* ${total.toLocaleString('en-US')} GHS`;
+            window.open(`https://wa.me/233000000000?text=${encodeURIComponent(message)}`, '_blank');
         });
 
-        // --- FETCH PRODUCTS FROM FIREBASE ---
         const productsContainer = document.getElementById('featured-products-container');
         let loadedProducts = [];
 
@@ -639,7 +686,6 @@
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 loadedProducts = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-                
                 productsContainer.innerHTML = "";
                 loadedProducts.forEach(product => {
                     const card = document.createElement('div');
@@ -663,12 +709,9 @@
                         if (prod) addToCart(prod);
                     });
                 });
-            } else {
-                productsContainer.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted);">No products available yet.</p>`;
             }
         });
 
-        // --- FETCH GLOBAL SETTINGS & HOME TEXTS ---
         onValue(dbRef(db, 'contenu_pages/global'), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
@@ -678,7 +721,16 @@
             }
         });
 
-        // Initial UI Render
+        onValue(dbRef(db, 'contenu_pages/accueil'), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if (data.titre1) document.getElementById('hero-title').innerText = data.titre1;
+                if (data.texte1) document.getElementById('hero-desc').innerText = data.texte1;
+                if (data.titre2) document.getElementById('about-title-main').innerText = data.titre2;
+                if (data.texte2) document.getElementById('about-desc-main').innerText = data.texte2;
+            }
+        });
+
         updateCartUI();
     </script>
 </body>
